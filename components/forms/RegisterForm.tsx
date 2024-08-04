@@ -76,13 +76,6 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
         toast.success(patient.message, {
           style: { color: "green" },
         });
-
-        new Promise((resolve) => {
-          setTimeout(() => {
-            router.push("/");
-            resolve(undefined);
-          }, 2000);
-        });
       }
       //   if (patient) router.push(`/patients/${user.$id}/new-appointment`);
     } catch (error: any) {

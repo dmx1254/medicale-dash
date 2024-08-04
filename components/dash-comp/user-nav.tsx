@@ -1,35 +1,21 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
-import { CaretSortIcon } from "@radix-ui/react-icons";
+"use client";
+
+import { useSession } from "next-auth/react";
+import DocteurAvatar from "../DocteurAvatar";
 
 // import notificationSong from "@/public/song/notif.mp3";
 
 export function UserNav() {
+  const { data: session, status } = useSession();
   return (
     <div className="flex items-start gap-2">
       <div>
-        <Avatar className="mr-2 h-8 w-8">
-          <AvatarImage
-            src="/avatars/03.png"
-            alt={"John Green"}
-            className="grayscale"
-          />
-          <AvatarFallback>SC</AvatarFallback>
-        </Avatar>
+        <DocteurAvatar session={session?.user} />
       </div>
       <div className="flex flex-col items-start gap-1">
-        <span className="text-sm font-bold text-dark-500">John Green</span>
+        <span className="text-sm font-bold text-dark-500">
+          Dr.{session?.user.name}
+        </span>
         <span className="text-sm text-green-500 font-extrabold">Admin</span>
       </div>
     </div>

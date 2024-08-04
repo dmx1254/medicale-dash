@@ -1,6 +1,5 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { Bell } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -37,7 +36,7 @@ export function Search() {
         <DropdownMenuTrigger asChild>
           <button className="relative cursor-pointer outline-none border-none mt-0.5">
             <Bell size={24} className="text-dark-500" />
-            {totalNotif >= 0 ? (
+            {totalNotif > 0 ? (
               <span className="absolute flex items-center justify-center h-3.5 w-3.5 rounded-full bg-[#dc2626] text-white/80 text-[10px] top-[-25%] left-[50%]">
                 {totalNotif}
               </span>

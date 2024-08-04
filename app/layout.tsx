@@ -4,9 +4,6 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import { options } from "./api/auth/[...nextauth]/option";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
 const fontSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -24,17 +21,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(options);
-  if (session) redirect("/dashboard");
-  // if (session) {
-  //   if (session.user.role === "DOCTOR") {
-  //     redirect("/dashboard");
-  //   } else {
-  //     redirect(`/patient/${session.user.id}/profile#informations-personnelles`);
-  //   }
-  // } else {
-  //   redirect("/");
-  // }
   return (
     <html lang="en">
       <body

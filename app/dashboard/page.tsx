@@ -15,12 +15,11 @@ import { Overview } from "@/components/dash-comp/overview";
 import { RecentAppointments } from "@/components/dash-comp/RecentAppointments";
 import { SearchParamProps } from "@/types";
 import PasskeyModal from "@/components/PasskeyModal";
-import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/option";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "Medicalecare Dashboard",
   description: "Example dashboard app built using the components.",
 };
 
@@ -31,15 +30,7 @@ export default async function DashboardPage({
   return (
     <>
       <div className="flex-col md:flex">
-        {session?.user.role === "DOCTOR" ? (
-          <PasskeyModal />
-        ) : session?.user.role === "PATIENT" ? (
-          redirect(
-            `/patient/${session.user.id}/profile#informations-personnelles`
-          )
-        ) : (
-          redirect("/")
-        )}
+        {session?.user.role === "DOCTOR" && <PasskeyModal />}
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-8 md:pt-6">
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList className="bg-dark-400">

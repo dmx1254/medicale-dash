@@ -5,7 +5,7 @@ export const UserFormValidation = z.object({
     .string()
     .refine(
       (phone) => /^\+?\d{9,15}$/.test(phone),
-      "Numero de telephone invalide"
+      "Numero de téléphone invalide"
     ),
   password: z
     .string()

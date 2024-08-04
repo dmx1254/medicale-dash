@@ -62,8 +62,7 @@ const PatientForm = () => {
         },
       });
     } else {
-      console.log(user);
-      // router.push("/dashboard");
+      router.push("/dashboard");
     }
 
     // if (user) router.push("/patients/profile");

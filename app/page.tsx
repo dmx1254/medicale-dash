@@ -2,13 +2,16 @@ import PasskeyModal from "@/components/PasskeyModal";
 import PatientForm from "@/components/forms/PatientForm";
 import { SearchParamProps } from "@/types";
 import Image from "next/image";
-import Link from "next/link";
+import { getServerSession } from "next-auth";
+import { options } from "./api/auth/[...nextauth]/option";
+import { redirect } from "next/navigation";
 
-export default function Home({ searchParams }: SearchParamProps) {
-  const isAdmin = searchParams.admin === "true";
+export default async function Home({ searchParams }: SearchParamProps) {
+  const session = await getServerSession(options);
+  if (session) redirect("/dashboard");
   return (
     <div className="flex h-screen max-h-screen">
-      {isAdmin && <PasskeyModal />}
+      {/* {session?.user.role === "DOCTOR" && <PasskeyModal />} */}
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[496px]">
           <Image
@@ -19,13 +22,13 @@ export default function Home({ searchParams }: SearchParamProps) {
             className="mb-12 h-10 w-fit"
           />
           <PatientForm />
-          <div className="text-14-regular mt-20 flex justify-between">
-            <p className="justify-items-end text-dark-600 xl:text-left">
+          <div className="text-14-regular mt-20 flex items-start justify-start">
+            <p className="text-dark-600 xl:text-left">
               &copy; 2024 MedicaleCare
             </p>
-            <Link href="/register" className="text-green-500">
+            {/* <Link href="/register" className="text-green-500">
               s'inscrire
-            </Link>
+            </Link> */}
           </div>
         </div>
       </section>

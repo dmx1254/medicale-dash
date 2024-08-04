@@ -10,12 +10,11 @@ export const options: NextAuthOptions = {
   pages: {
     signIn: "/",
     signOut: "/",
-    newUser: "/register",
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 60 * 60,
+    maxAge: 60 * 60 * 24,
   },
   providers: [
     CredentialsProvider({
@@ -31,10 +30,10 @@ export const options: NextAuthOptions = {
         if (credentials) {
           const user = await PatientModel.findOne({ phone: credentials.phone });
           if (!user) {
-            throw new Error("Pas d'utilisateur avec ce numéro");
+            throw new Error("Pas de docteur avec ce numéro");
           }
           if (user.isBan) {
-            throw new Error("Vous êtes banni");
+            throw new Error("Ce numéro a été b êtes banni");
           }
           const isCorrectPassword = await bcrypt.compare(
             credentials.password,

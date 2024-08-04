@@ -5,7 +5,8 @@ import {
   Calendar,
   House,
   CalendarCheck,
-  BriefcaseMedical
+  BriefcaseMedical,
+  ShieldPlus,
 } from "lucide-react";
 
 type profilePerso = {
@@ -63,5 +64,10 @@ export const sidebarInfo: profilePerso[] = [
     slug: "/dashboard/docteurs",
     icon: BriefcaseMedical,
   },
-  
+  {
+    id: "zayga25",
+    title: "Ajouter un patient",
+    slug: "/dashboard/nouveau-patient",
+    icon: ShieldPlus,
+  },
 ];
