@@ -130,3 +130,12 @@ export async function fiveRecentAppointments() {
     throw new Error(error.message);
   }
 }
+
+export async function getAllAppointmentCounts() {
+  try {
+    const totalAppointments = await AppointmentModel.countDocuments({});
+    return totalAppointments;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

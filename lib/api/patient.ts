@@ -293,3 +293,15 @@ export async function updateSingleDoctorStatus(
     throw new Error(`Error to updating doctor status: ${error.message}`);
   }
 }
+
+export async function getAllPatientsCounts() {
+  try {
+    const totalPatients = await PatientModel.countDocuments({
+      role: "PATIENT",
+      isBan: false,
+    });
+    return totalPatients;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+}

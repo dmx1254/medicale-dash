@@ -9,6 +9,7 @@ import {
   createPatientAppointment,
   deleteSingleAppointment,
   fiveRecentAppointments,
+  getAllAppointmentCounts,
   getAllAppointmentList,
   getPatientApppointment,
   getUserPatientAppointment,
@@ -175,6 +176,15 @@ export const getFiveRecentAppointments = async () => {
     return parseStringify(fiveRecentApps);
   } catch (error: any) {
     console.log(error);
+    console.error(error);
+  }
+};
+
+export const AppointmentCounts = async () => {
+  try {
+    const allAppointments = await getAllAppointmentCounts();
+    return parseStringify(allAppointments);
+  } catch (error) {
     console.error(error);
   }
 };

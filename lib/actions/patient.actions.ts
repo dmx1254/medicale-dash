@@ -8,6 +8,7 @@ import {
   deBanOnePatient,
   deleteOneDoctor,
   deleteOnePatient,
+  getAllPatientsCounts,
   getOnePatient,
   getPatients,
   login,
@@ -191,5 +192,14 @@ export const updateIsDoctorStatus = async (
     return parseStringify(doctorStatusUpdated);
   } catch (error: any) {
     throw new Error(error);
+  }
+};
+
+export const getPatientCounts = async () => {
+  try {
+    const allPatients = await getAllPatientsCounts();
+    return parseStringify(allPatients);
+  } catch (error) {
+    console.error(error);
   }
 };

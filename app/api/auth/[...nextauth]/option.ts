@@ -81,5 +81,4 @@ export const options: NextAuthOptions = {
     //   }
     // },
   },
-  debug: true,
 };

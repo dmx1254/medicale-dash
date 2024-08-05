@@ -6,9 +6,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { SESSIONAUTH } from "@/types";
 
-type SessionAvatar = SESSIONAUTH | undefined;
 
-const DocteurAvatar = ({ session }: { session: SessionAvatar }) => {
+const DocteurAvatar = ({ session }: { session: SESSIONAUTH }) => {
   const [profile, setProfile] = useState<string>("");
   const [isProfileLoading, setIsProfileLoading] = useState<boolean>(false);
   //   console.log(profile)
@@ -44,9 +43,9 @@ const DocteurAvatar = ({ session }: { session: SessionAvatar }) => {
         <AvatarImage src={profile} alt={session?.name} className="" />
       )}
 
-      {/* <AvatarFallback>{`${session?.name.split(" ")[0][0]}${
+      <AvatarFallback>{`${session?.name.split(" ")[0][0]}${
         session?.name.split(" ")[1][0]
-      }`}</AvatarFallback> */}
+      }`}</AvatarFallback>
     </Avatar>
   );
 };
