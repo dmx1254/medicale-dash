@@ -41,20 +41,20 @@ export const columns: ColumnDef<Patient>[] = [
     header: "Genre",
     cell: ({ row }) => (
       <p
-        style={{
-          color:
-            row?.original.gender === "homme"
-              ? "#a78bfa"
-              : row.original.gender === "femme"
-              ? "#f472b6"
-              : "#22c55e",
-          backgroundColor:
-            row?.original.gender === "homme"
-              ? "#4c1d95"
-              : row.original.gender === "femme"
-              ? "#831843"
-              : "#14532d",
-        }}
+        // style={{
+        //   color:
+        //     row?.original.gender === "homme"
+        //       ? "#a78bfa"
+        //       : row.original.gender === "femme"
+        //       ? "#f472b6"
+        //       : "#22c55e",
+        //   backgroundColor:
+        //     row?.original.gender === "homme"
+        //       ? "#4c1d95"
+        //       : row.original.gender === "femme"
+        //       ? "#831843"
+        //       : "#14532d",
+        // }}
         className="status-12-semibold  capitalize status-badge"
       >
         {row?.original.gender}

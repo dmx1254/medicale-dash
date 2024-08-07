@@ -33,7 +33,7 @@ export const options: NextAuthOptions = {
             throw new Error("Pas de docteur avec ce numéro");
           }
           if (user.isBan) {
-            throw new Error("Ce numéro a été b êtes banni");
+            throw new Error("Ce numéro a été banni");
           }
           const isCorrectPassword = await bcrypt.compare(
             credentials.password,

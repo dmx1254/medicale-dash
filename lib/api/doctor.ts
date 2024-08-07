@@ -90,3 +90,16 @@ export async function getActifDoctors() {
     throw new Error(error);
   }
 }
+
+export async function getActifDoctorsCount() {
+  try {
+    const isActifDoctorsCount = await PatientModel.countDocuments({
+      role: "DOCTOR",
+      doctorStatus: true,
+    });
+
+    return isActifDoctorsCount;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

@@ -6,7 +6,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { SESSIONAUTH } from "@/types";
 
-
 const DocteurAvatar = ({ session }: { session: SESSIONAUTH }) => {
   const [profile, setProfile] = useState<string>("");
   const [isProfileLoading, setIsProfileLoading] = useState<boolean>(false);
@@ -23,15 +22,12 @@ const DocteurAvatar = ({ session }: { session: SESSIONAUTH }) => {
         const data = await response.json();
         // console.log(data);
         setProfile(data.profile);
+        setIsProfileLoading(false);
       } catch (error) {
         console.error(error);
       }
-      new Promise((resolve) => {
-        setTimeout(() => {
-          setIsProfileLoading(false);
-        }, 500);
-        resolve(undefined);
-      });
+
+      setIsProfileLoading(false);
     };
     fetchDoctor();
   }, [session?.id]);
@@ -43,9 +39,9 @@ const DocteurAvatar = ({ session }: { session: SESSIONAUTH }) => {
         <AvatarImage src={profile} alt={session?.name} className="" />
       )}
 
-      <AvatarFallback>{`${session?.name.split(" ")[0][0]}${
+      {/* <AvatarFallback>{`${session?.name.split(" ")[0][0]}${
         session?.name.split(" ")[1][0]
-      }`}</AvatarFallback>
+      }`}</AvatarFallback> */}
     </Avatar>
   );
 };

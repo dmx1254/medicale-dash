@@ -1,12 +1,13 @@
 import React from "react";
 import clsx from "clsx";
 import Image from "next/image";
+import { LucideIcon } from "lucide-react";
 
 interface StatCardProps {
   type: "appointments" | "pending" | "cancelled";
   count: number;
   label: string;
-  icon: string;
+  icon: React.ReactNode;
   w: number;
   h: number;
 }
@@ -28,13 +29,7 @@ const PatientStatCard = ({
       })}
     >
       <div className="flex items-center gap-4 ">
-        <Image
-          src={icon}
-          height={w}
-          width={h}
-          alt={label}
-          className="size-8 w-fit"
-        />
+        {icon}
         <h2 className="text-32-bold text-white">{count}</h2>
       </div>
       <p className="text-14-regular">{label}</p>

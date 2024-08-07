@@ -12,14 +12,12 @@ import {
 
 import { toast } from "sonner";
 import { MoreHorizontal } from "lucide-react";
-import { AppointModal } from "@/types/appwrite.types";
-import { deleteAppointment } from "@/lib/actions/appointment.actions";
 import { Patient } from "@/types";
 import { banPatient, deBanPatient } from "@/lib/actions/patient.actions";
-import PatientPDF from "../pdf/PatientPdf";
+import PatientPDF from "../pdf/PatientPDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
-const PatientAction = ({ data }: Patient) => {
+const PatientAction = ({ data }: {data: Patient}) => {
   const [open, setOpen] = useState<boolean>(false);
   //   console.log(data)
 

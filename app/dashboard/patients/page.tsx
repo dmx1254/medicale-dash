@@ -1,9 +1,10 @@
-import StatCard from "@/components/StatCard";
 import React from "react";
 import { columns } from "@/components/patientable/columns";
 import { DataTable } from "@/components/patientable/DataTable";
 import { getAllPatients } from "@/lib/actions/patient.actions";
 import PatientStatCard from "@/components/PatientStatCard";
+
+import { Users, UserCheck, TriangleAlert } from "lucide-react";
 
 const PatientPage = async () => {
   const { patients, patientsCount, patientsBan, patientsActif } =
@@ -24,15 +25,15 @@ const PatientPage = async () => {
             type="appointments"
             count={patientsCount}
             label="Total Patients"
-            w={100}
-            h={100}
-            icon="/assets/patients.png"
+            w={32}
+            h={32}
+            icon={<Users size={32} className="text-[#a16207]" />}
           />
           <PatientStatCard
             type="pending"
             count={patientsActif}
             label="Patients Actif"
-            icon="/assets/actif.png"
+            icon={<UserCheck size={32} className="text-[#3b82f6]" />}
             w={32}
             h={32}
           />
@@ -40,7 +41,7 @@ const PatientPage = async () => {
             type="cancelled"
             count={patientsBan}
             label="Patients Bannis"
-            icon="/assets/icons/ban.svg"
+            icon={<TriangleAlert size={32} className="text-[#FFD147]" />}
             w={32}
             h={32}
           />

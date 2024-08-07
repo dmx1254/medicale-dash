@@ -1,5 +1,5 @@
 // import { DoctorCreating } from "@/types";
-import { getActifDoctors } from "../api/doctor";
+import { getActifDoctors, getActifDoctorsCount } from "../api/doctor";
 import { parseStringify } from "../utils";
 // import { createNewDoctor, getDocteurAndDetails } from "../api/doctor";
 // import { parseStringify } from "../utils";
@@ -14,16 +14,11 @@ export async function getDoctorsInService() {
   }
 }
 
-// export async function createDoctor(doctorData: DoctorCreating) {
-//   try {
-//     const response = await createNewDoctor(doctorData);
-//     if (!response.user) {
-//       return response;
-//     }
-
-//     revalidatePath("/dashboard/docteurs");
-//     return response;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
+export async function getDoctorsInServiceCount() {
+  try {
+    const actifDoctorsCount = await getActifDoctorsCount();
+    return parseStringify(actifDoctorsCount);
+  } catch (error) {
+    console.error(error);
+  }
+}
