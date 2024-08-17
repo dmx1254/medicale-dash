@@ -135,3 +135,17 @@ export const dateFrToConvert = (date: Date) => {
 //     redirect("/");
 //   }
 // }
+
+export const options = {
+  method: "POST",
+  hostname: process.env.INFOBIB_BASE_URL,
+  path: "/sms/2/text/advanced",
+  headers: {
+    Authorization: process.env.INFOBIB_API_KEY,
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  maxRedirects: 20,
+};
+
+export const fetcher = (url: string) => fetch(url).then((res) => res.json());

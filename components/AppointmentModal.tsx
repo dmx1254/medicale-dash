@@ -12,7 +12,6 @@ import {
 import { Button } from "./ui/button";
 import AppointmentForm from "./forms/AppointmentForm";
 import { AppointModal } from "@/types/appwrite.types";
-import { getDoctorsInService } from "@/lib/actions/doctor.actions";
 import { ActifRegisterDoctor } from "@/types";
 
 const AppointmentModal = ({
@@ -33,7 +32,6 @@ const AppointmentModal = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // console.log(doctors);
 
   useEffect(() => {
     const getDoctorsCall = async () => {
@@ -54,9 +52,10 @@ const AppointmentModal = ({
         setLoading(false);
       }
     };
-
-    getDoctorsCall();
-  }, []);
+    if (open) {
+      getDoctorsCall();
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

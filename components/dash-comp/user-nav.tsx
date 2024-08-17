@@ -1,8 +1,8 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import DocteurAvatar from "../DocteurAvatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 // import notificationSong from "@/public/song/notif.mp3";
 
@@ -11,7 +11,17 @@ export function UserNav() {
   return (
     <div className="flex items-start gap-2">
       <div>
-        <DocteurAvatar session={session?.user} />
+        <Avatar className="mr-2 h-8 w-8">
+          <AvatarImage
+            src="/doctor.png"
+            alt={session?.user.name}
+            className=""
+          />
+
+          {/* <AvatarFallback>{`${session?.user.name.split(" ")[0][0]}${
+            session?.user?.name.split(" ")[1][0]
+          }`}</AvatarFallback> */}
+        </Avatar>
       </div>
       {session ? (
         <div className="flex flex-col items-start gap-1">

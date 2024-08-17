@@ -19,7 +19,7 @@ export async function GET() {
     return NextResponse.json(isActifDoctors);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch doctors"+ error },
+      { error: "Failed to fetch doctors" + error },
       { status: 500 }
     );
   }

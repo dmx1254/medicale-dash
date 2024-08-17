@@ -103,3 +103,21 @@ export async function getActifDoctorsCount() {
     throw new Error(error);
   }
 }
+
+export async function getActifDoctorsInPatientForm() {
+  try {
+    const isActifDoctors = await PatientModel.find({
+      role: "DOCTOR",
+      doctorStatus: true,
+    })
+      .select("_id")
+      .select("name")
+      .select("speciality")
+      .select("profile")
+      .select("createdAt")
+      .select("updatedAt");
+    return parseStringify(isActifDoctors);
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}

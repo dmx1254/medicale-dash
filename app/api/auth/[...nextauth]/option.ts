@@ -35,6 +35,15 @@ export const options: NextAuthOptions = {
           if (user.isBan) {
             throw new Error("Ce numéro a été banni");
           }
+          if (!user.isAdmin) {
+            throw new Error("Vous n'êtes pas autorise à vous connecter");
+          }
+          if (!user.isAdmin) {
+            throw new Error("Vous n'êtes pas autorise à vous connecter");
+          }
+          if (user.role === "PATIENT") {
+            throw new Error("Vous n'êtes pas autorise à vous connecter");
+          }
           const isCorrectPassword = await bcrypt.compare(
             credentials.password,
             user.password
