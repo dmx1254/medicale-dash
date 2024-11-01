@@ -1,13 +1,56 @@
 import StatCard from "@/components/StatCard";
-import { getAppointmentList } from "@/lib/actions/appointment.actions";
-import React from "react";
+import React, { Suspense } from "react";
+// import { getAppointmentList } from "@/lib/actions/appointment.actions";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
+import { getAllAppointmentList } from "@/lib/api/appointment";
+import LatestInvoicesSkeleton from "@/components/skelettons/skeletons";
+import DateFilter from "@/components/DateFilter";
+import ScheduleSearch from "@/components/ScheduleSearch";
+import { getDoctorsWithoutField } from "@/lib/actions/doctor.actions";
+import { AppointmentResponse } from "@/types";
 
-const RendezvousPage = async () => {
+const RendezvousPage = async ({
+  searchParams,
+}: {
+  searchParams?: {
+    patient?: string;
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+    doctor?: string;
+    page?: number;
+  };
+}) => {
   //   const appointments = await getRecentAppointmentList();
-  const appointments = await getAppointmentList();
-  //   console.log(appointments);
+  const patient = searchParams?.patient || "";
+  const startDate = searchParams?.startDate || "";
+  const endDate = searchParams?.endDate || "";
+  const status = searchParams?.status || "";
+  const doctor = searchParams?.doctor || "";
+  const currentPageStr = searchParams?.page || 1;
+  const currentPage = Number(currentPageStr);
+  const appointments = await getAllAppointmentList(
+    patient,
+    startDate,
+    endDate,
+    status,
+    doctor,
+    currentPage
+  );
+  const doctors = await getDoctorsWithoutField();
+  // console.log(appointments.allAppointments);
+  // console.log("When i change page");
+  // console.log("Start date: " + startDate);
+  // const scheduledCount = appointments.allAppointments.filter(
+  //   (app: AppointmentResponse) => app.status === "scheduled"
+  // );
+  // const pendingCount = appointments.allAppointments.filter(
+  //   (app: AppointmentResponse) => app.status === "pending"
+  // );
+  // const cancelledCount = appointments.allAppointments.filter(
+  //   (app: AppointmentResponse) => app.status === "cancelled"
+  // );
 
   return (
     <div className="mx-auto flex w-full flex-col space-y-14">
@@ -38,7 +81,22 @@ const RendezvousPage = async () => {
             icon="/assets/icons/cancelled.svg"
           />
         </section>
-        <DataTable columns={columns} data={appointments?.allAppointments} />
+        <section className="w-full flex items-center justify-between">
+          <ScheduleSearch doctors={doctors} />
+          <DateFilter />
+        </section>
+        <Suspense
+          key={patient + currentPage}
+          fallback={<LatestInvoicesSkeleton />}
+        >
+          <DataTable
+            totalPages={appointments.totalPages}
+            itemsperPage={8}
+            columns={columns}
+            data={appointments?.allAppointments}
+            currentPage={currentPage}
+          />
+        </Suspense>
       </main>
     </div>
   );

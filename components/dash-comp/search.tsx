@@ -1,8 +1,7 @@
 "use client";
 
-import { Bell } from "lucide-react";
-
 import { useEffect, useState } from "react";
+import { Bell } from "lucide-react";
 import useNotificationStore from "@/lib/zustandmanage";
 import usePusherNotifications from "@/app/hooks/usePusherNotifications";
 import {
@@ -11,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function Search() {
+export function NotificationComp() {
   const [open, setOpen] = useState<boolean>(false);
   const { appointmentsNotifs, addNotification, totalNotif } =
     useNotificationStore();
@@ -31,16 +30,17 @@ export function Search() {
   }, [message]);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="w-full flex items-center gap-4">
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <button className="relative cursor-pointer outline-none border-none mt-0.5">
             <Bell size={24} className="text-dark-500" />
-            {totalNotif > 0 ? (
+            <span className="absolute flex items-center justify-center h-1.5 w-1.5 bg-red-700 rounded-full  top-[-2%] left-[60%]"></span>
+            {/* {totalNotif > 0 ? (
               <span className="absolute flex items-center justify-center h-3.5 w-3.5 rounded-full bg-[#dc2626] text-white/80 text-[10px] top-[-25%] left-[50%]">
                 {totalNotif}
               </span>
-            ) : null}
+            ) : null} */}
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -75,11 +75,6 @@ export function Search() {
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
-      {/* <Input
-        type="search"
-        placeholder="Search..."
-        className="w-[250] md:w-[350px] bg-transparent border-dark-500 text-white placeholder:text-dark-500"
-      /> */}
     </div>
   );
 }

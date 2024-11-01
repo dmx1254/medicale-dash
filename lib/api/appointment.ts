@@ -2,6 +2,13 @@ import { isValidObjectId } from "mongoose";
 import { AppointmentUpdate, CreateAppointmentParams } from "@/types";
 import { connectDB } from "../db";
 import AppointmentModel from "../models/appointment.model";
+
+import { parse, startOfDay, endOfDay, addDays, subDays } from "date-fns";
+
+function parseDate(dateString: string): Date {
+  return parse(dateString, "dd-MM-yyyy", new Date());
+}
+
 connectDB();
 
 export async function createPatientAppointment(
@@ -43,23 +50,99 @@ export async function getUserPatientAppointment(userId: string) {
   }
 }
 
-export async function getAllAppointmentList() {
+export async function getAllAppointmentList(
+  patient: string,
+  startDate: string,
+  endDate: string,
+  status: string,
+  doctor: string,
+  currentPage: number
+) {
+  let itemsPerPage: number = 8;
+  const offset = (currentPage - 1) * itemsPerPage;
+
+  const matchConditions: any = {};
+
+  if (patient && patient.trim() !== "") {
+    matchConditions.name = { $regex: patient, $options: "i" };
+  }
+
+  if (status && status.trim() !== "") {
+    matchConditions.status = { $regex: status, $options: "i" };
+  }
+  if (doctor && doctor.trim() !== "") {
+    matchConditions.primaryPhysician = { $regex: doctor, $options: "i" };
+  }
+
+  if (startDate || endDate) {
+    matchConditions.schedule = {};
+
+    if (startDate) {
+      const parsedStartDate = parseDate(startDate);
+      matchConditions.schedule.$gte = startOfDay(parsedStartDate);
+    }
+
+    if (endDate) {
+      const parsedEndDate = parseDate(endDate);
+      matchConditions.schedule.$lte = endOfDay(parsedEndDate);
+    }
+  }
+
+  // console.log(startDate);
+  // console.log(endDate);
+  // console.log(JSON.stringify(matchConditions, null, 2));
+
   try {
-    const allAppointmentsResult = AppointmentModel.find().sort({
-      updatedAt: -1,
-    });
+    const totalDocuments = await AppointmentModel.countDocuments(
+      matchConditions
+    );
+
+    const allAppointmentsResult = AppointmentModel.aggregate([
+      {
+        $match: matchConditions,
+      },
+      {
+        $sort: { schedule: -1 },
+      },
+      {
+        $skip: offset,
+      },
+      {
+        $limit: itemsPerPage,
+      },
+    ]);
+
     const scheduledCountResult = AppointmentModel.countDocuments({
+      ...matchConditions,
       status: "scheduled",
     });
     const pendingCountResult = AppointmentModel.countDocuments({
+      ...matchConditions,
       status: "pending",
     });
 
     const cancelledCountResult = AppointmentModel.countDocuments({
+      ...matchConditions,
       status: "cancelled",
     });
 
-    const [allAppointments, scheduledCount, pendingCount, cancelledCount] =
+    // const scheduledCountResultTest = AppointmentModel.countDocuments(
+    //   {
+    //     ...matchConditions,
+    //     status: "scheduled",
+    //   },
+    //   {
+    //     $sort: { schedule: -1 },
+    //   },
+    //   {
+    //     $skip: offset,
+    //   },
+    //   {
+    //     $limit: itemsPerPage,
+    //   }
+    // );
+
+    const [appointments, scheduledCountPa, pendingCountPa, cancelledCountPa] =
       await Promise.all([
         allAppointmentsResult,
         scheduledCountResult,
@@ -67,11 +150,20 @@ export async function getAllAppointmentList() {
         cancelledCountResult,
       ]);
 
+    const allAppointments = JSON.parse(JSON.stringify(appointments));
+    const scheduledCount = JSON.parse(JSON.stringify(scheduledCountPa));
+    const pendingCount = JSON.parse(JSON.stringify(pendingCountPa));
+    const cancelledCount = JSON.parse(JSON.stringify(cancelledCountPa));
+    const totalPagesGet = JSON.parse(JSON.stringify(totalDocuments));
+
+    const totalPages = Math.ceil(totalPagesGet / itemsPerPage);
+
     return {
       allAppointments,
       scheduledCount,
       pendingCount,
       cancelledCount,
+      totalPages,
     };
   } catch (error: any) {
     throw new Error(error.message);

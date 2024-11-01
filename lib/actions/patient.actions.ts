@@ -57,22 +57,22 @@ export const registerPatient = async (patient: UserRegister) => {
   }
 };
 
-export const getAllPatients = async () => {
-  try {
-    const patients = await getPatients();
-    if (patients) {
-      return parseStringify(patients);
-    }
-    return {
-      patients: 0,
-      patientsCount: 0,
-      patientsBan: 0,
-      patientsActif: [],
-    };
-  } catch (error: any) {
-    throw new Error(error);
-  }
-};
+// export const getAllPatients = async () => {
+//   try {
+//     const patients = await getPatients();
+//     if (patients) {
+//       return parseStringify(patients);
+//     }
+//     return {
+//       patients: 0,
+//       patientsCount: 0,
+//       patientsBan: 0,
+//       patientsActif: [],
+//     };
+//   } catch (error: any) {
+//     throw new Error(error);
+//   }
+// };
 
 export const deletePatient = async (patientId: string) => {
   try {

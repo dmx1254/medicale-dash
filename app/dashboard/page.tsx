@@ -14,11 +14,16 @@ import { SearchParamProps } from "@/types";
 import PasskeyModal from "@/components/PasskeyModal";
 import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/option";
-import { AppointmentCounts } from "@/lib/actions/appointment.actions";
+import {
+  AppointmentCounts,
+  getFiveRecentAppointments,
+} from "@/lib/actions/appointment.actions";
 
 import { CalendarCheck2, BriefcaseMedical } from "lucide-react";
 import { getPatientCounts } from "@/lib/actions/patient.actions";
 import { getDoctorsInServiceCount } from "@/lib/actions/doctor.actions";
+import { PieChartVisitors } from "@/components/PieChartVisitors";
+import { BarCharDeskMob } from "@/components/BarCharDeskMob";
 
 export const metadata: Metadata = {
   title: "Medicalecare Dashboard",
@@ -32,12 +37,15 @@ export default async function DashboardPage({
   const totalAppointments = await AppointmentCounts();
   const totalPatients = await getPatientCounts();
   const totalDoctors = await getDoctorsInServiceCount();
+  const isAdmin = !!searchParams.isAdmin;
+
+  // console.log(isAdmin);
   return (
     <>
       <div className="flex-col md:flex">
-        {session?.user.role === "DOCTOR" && <PasskeyModal />}
+        {isAdmin && <PasskeyModal />}
         <div className="flex-1 space-y-4 p-4 md:p-8 pt-8 md:pt-6">
-          <Tabs defaultValue="overview" className="space-y-4">
+          <Tabs defaultValue="overview" className="space-y-8">
             {/* <TabsList className="bg-dark-400">
               <TabsTrigger
                 value="overview"
@@ -154,7 +162,7 @@ export default async function DashboardPage({
                   <CardHeader>
                     <CardTitle>Rendez vous recents</CardTitle>
                     <CardDescription className="text-xs text-green-500">
-                      Vous avez {totalAppointments} rendez programmés ce mois.
+                      Vos {5} recents rendez-vous vous attendent.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -163,6 +171,10 @@ export default async function DashboardPage({
                 </Card>
               </div>
             </TabsContent>
+            <div className="w-full flex items-center max-lg:flex-col gap-8">
+              <PieChartVisitors />
+              <BarCharDeskMob />
+            </div>
           </Tabs>
         </div>
       </div>

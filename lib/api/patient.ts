@@ -4,6 +4,13 @@ import { connectDB } from "../db";
 import PatientModel from "../models/patient.model";
 import bcrypt from "bcrypt";
 import { parseStringify } from "../utils";
+
+import { parse, startOfDay, endOfDay, addDays, subDays } from "date-fns";
+
+function parseDate(dateString: string): Date {
+  return parse(dateString, "dd-MM-yyyy", new Date());
+}
+
 connectDB();
 
 export async function createPatient(patient: UserRegister) {
@@ -117,39 +124,106 @@ export async function iSEmailVerified(codeVerif: string, userId: string) {
   }
 }
 
-export async function getPatients() {
+export async function getPatients(
+  patient: string,
+  startDate: string,
+  endDate: string,
+  genre: string,
+  identicationType: string,
+  currentPage: number
+) {
+  let itemsPerPage: number = 8;
+  const offset = (currentPage - 1) * itemsPerPage;
+
+  const matchConditions: any = { role: "PATIENT" };
+
+  if (patient && patient.trim() !== "") {
+    matchConditions.name = { $regex: patient, $options: "i" };
+  }
+
+  if (genre && genre.trim() !== "") {
+    matchConditions.gender = { $regex: genre, $options: "i" };
+  }
+  if (identicationType && identicationType.trim() !== "") {
+    matchConditions.identificationType = {
+      $regex: identicationType,
+      $options: "i",
+    };
+  }
+
+  if (startDate || endDate) {
+    matchConditions.createdAt = {};
+
+    if (startDate) {
+      const parsedStartDate = parseDate(startDate);
+      matchConditions.createdAt.$gte = startOfDay(parsedStartDate);
+    }
+
+    if (endDate) {
+      const parsedEndDate = parseDate(endDate);
+      matchConditions.createdAt.$lte = endOfDay(parsedEndDate);
+    }
+  }
+
   try {
-    const patientsFinding = await PatientModel.find({
-      isAdmin: false,
-      role: "PATIENT",
-    })
-      .sort({ createdAt: -1 })
-      .select("-password")
-      .select("-identificationDocument");
+    const totalDocuments = await PatientModel.countDocuments(matchConditions);
+
+    const patientsFinding = PatientModel.aggregate([
+      {
+        $match: matchConditions,
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $skip: offset,
+      },
+      {
+        $limit: itemsPerPage,
+      },
+      {
+        $project: {
+          password: 0, // Exclut le champ 'password'
+          identificationDocument: 0, // Exclut le champ 'identificationDocument'
+        },
+      },
+    ]);
+
     const allPatientCount = PatientModel.countDocuments({
+      ...matchConditions,
       isAdmin: false,
       role: "PATIENT",
     });
 
     const allPatientBan = PatientModel.countDocuments({
+      ...matchConditions,
       isBan: true,
       isAdmin: false,
       role: "PATIENT",
     });
     const allPatientActif = PatientModel.countDocuments({
+      ...matchConditions,
       isBan: false,
       isAdmin: false,
       role: "PATIENT",
     });
 
-    const [patients, patientsCount, patientsBan, patientsActif] =
+    const [allPatients, patientsCountAll, patientsBanAll, patientsActifAll] =
       await Promise.all([
         patientsFinding,
         allPatientCount,
         allPatientBan,
         allPatientActif,
       ]);
-    return { patients, patientsCount, patientsBan, patientsActif };
+    const patients = JSON.parse(JSON.stringify(allPatients));
+    const patientsCount = JSON.parse(JSON.stringify(patientsCountAll));
+    const patientsBan = JSON.parse(JSON.stringify(patientsBanAll));
+    const patientsActif = JSON.parse(JSON.stringify(patientsActifAll));
+    const totalPagesGet = JSON.parse(JSON.stringify(totalDocuments));
+
+    const totalPages = Math.ceil(totalPagesGet / itemsPerPage);
+
+    return { patients, patientsCount, patientsBan, patientsActif, totalPages };
   } catch (error: any) {
     console.error(`Error fetching patients: ${error}`);
   }

@@ -9,9 +9,10 @@ import { redirect } from "next/navigation";
 export default async function Home({ searchParams }: SearchParamProps) {
   const session = await getServerSession(options);
   if (session) redirect("/dashboard");
+  
   return (
     <div className="flex h-screen max-h-screen">
-      {/* {session?.user.role === "DOCTOR" && <PasskeyModal />} */}
+      {/* {isAdmin && <PasskeyModal />} */}
       <section className="remove-scrollbar container my-auto">
         <div className="sub-container max-w-[496px]">
           <Image

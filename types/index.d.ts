@@ -18,9 +18,10 @@ export interface AuthSignInProvider {
   phone: string;
   password: string;
 }
-declare interface User extends CreateUserParams {
-  $id: string;
-}
+
+// declare interface User extends CreateUserParams {
+//   $id: string;
+// }
 
 declare interface RegisterUserParams extends CreateUserParams {
   name: string;
@@ -53,29 +54,31 @@ export interface UserRegister {
   address: string;
   allergies?: string;
   birthDate: Date;
-  bloodgroup: string;
-  currentMedication: string;
+  bloodgroup?: string;
+  currentMedication?: string;
   disclosureConsent: boolean;
   email: string;
   emergencyContactName: string;
   emergencyContactNumber: string;
-  familyMedicalHistory: string;
+  familyMedicalHistory?: string;
   gender: string;
   identificationNumber: string;
   identificationType: string;
-  insurancePolicyNumber: string;
-  insuranceProvider: string;
+  insurancePolicyNumber?: string;
+  insuranceProvider?: string;
   name: string;
   occupation: string;
   password: string;
-  pastMedicalHistory: string;
+  pastMedicalHistory?: string;
   phone: string;
   primaryPhysician: string;
   privacyConsent: boolean;
   treatmentConsent: boolean;
-  vaccination: string;
+  vaccination?: string;
+  identificationDocument: string;
   role?: string;
 }
+
 
 export interface Patient {
   _id: string;
@@ -141,8 +144,8 @@ export interface AppointmentUpdate {
 }
 
 export type UpdateAppointmentParams = {
-  appointmentId: string;
   userId: string;
+  appointmentId: string;
   phone: string;
   appointment: AppointmentUpdate;
   type: string;

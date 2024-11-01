@@ -75,7 +75,7 @@ export async function createNewDoctor(doctorData: DoctorCreating) {
 
 export async function getActifDoctors() {
   try {
-    const isActifDoctors = await PatientModel.find({
+    const doctors = await PatientModel.find({
       role: "DOCTOR",
       doctorStatus: true,
     })
@@ -85,7 +85,24 @@ export async function getActifDoctors() {
       .select("profile")
       .select("createdAt")
       .select("updatedAt");
-    return isActifDoctors;
+    return doctors;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function getDoctorsWithRemoveFields() {
+  try {
+    const doctors = await PatientModel.find({
+      role: "DOCTOR",
+    })
+      .select("_id")
+      .select("name")
+      .select("speciality")
+      .select("profile")
+      .select("createdAt")
+      .select("updatedAt");
+    return doctors;
   } catch (error: any) {
     throw new Error(error);
   }

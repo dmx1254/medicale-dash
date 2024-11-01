@@ -1,5 +1,5 @@
 // import { DoctorCreating } from "@/types";
-import { getActifDoctors, getActifDoctorsCount } from "../api/doctor";
+import { getActifDoctors, getActifDoctorsCount, getDoctorsWithRemoveFields } from "../api/doctor";
 import { parseStringify } from "../utils";
 // import { createNewDoctor, getDocteurAndDetails } from "../api/doctor";
 // import { parseStringify } from "../utils";
@@ -8,6 +8,16 @@ import { parseStringify } from "../utils";
 export async function getDoctorsInService() {
   try {
     const actifDoctors = await getActifDoctors();
+    return parseStringify(actifDoctors);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+export async function getDoctorsWithoutField() {
+  try {
+    const actifDoctors = await getDoctorsWithRemoveFields();
     return parseStringify(actifDoctors);
   } catch (error) {
     console.error(error);

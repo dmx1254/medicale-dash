@@ -1,5 +1,5 @@
 import StatCard from "@/components/StatCard";
-import { getAppointmentList } from "@/lib/actions/appointment.actions";
+// import { getAppointmentList } from "@/lib/actions/appointment.actions";
 import React from "react";
 import { columns } from "@/components/doctortable/columns";
 import { DataTable } from "@/components/doctortable/DataTable";

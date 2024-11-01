@@ -84,14 +84,15 @@ export const getUserAppointments = async (userId: string) => {
 //   }
 // };
 
-export const getAppointmentList = async () => {
-  try {
-    const appointments = await getAllAppointmentList();
-    return parseStringify(appointments);
-  } catch (error: any) {
-    console.error(error);
-  }
-};
+// export const getAppointmentList = async () => {
+//   try {
+//     const patient="";
+//     const appointments = await getAllAppointmentList(patient);
+//     return parseStringify(appointments);
+//   } catch (error: any) {
+//     console.error(error);
+//   }
+// };
 
 export const updateAppointment = async ({
   appointmentId,

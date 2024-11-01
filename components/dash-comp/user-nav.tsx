@@ -8,8 +8,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function UserNav() {
   const { data: session } = useSession();
+
   return (
-    <div className="flex items-start gap-2">
+    <div className="w-full flex items-start justify-end gap-4">
       <div>
         <Avatar className="mr-2 h-8 w-8">
           <AvatarImage

@@ -80,7 +80,7 @@ const AppointmentAction = ({ data }: { data: AppointModal }) => {
             </button>
             <button
               className="text-sm text-green-500 font-extrabold transition-all hover:opacity-80"
-              onClick={() => handleDeleteAppointment(data._id)}
+              onClick={() => handleDeleteAppointment(data._id ?? "")}
             >
               Confirmer
             </button>
@@ -103,7 +103,7 @@ const AppointmentAction = ({ data }: { data: AppointModal }) => {
           <DropdownMenuItem
             className="cursor-pointer transition-transform hover:opacity-80"
             onClick={() => {
-              navigator.clipboard.writeText(data.phone);
+              navigator.clipboard.writeText(data?.phone ?? "no phone number");
               toast.success("Numéro de téléphone copié dans la presse papier", {
                 style: {
                   color: "#22c55e",

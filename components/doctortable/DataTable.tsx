@@ -86,7 +86,7 @@ export function DataTable<TData, TValue>({
               variant="outline"
               className="ml-auto border-dark-500 text-14-regular focus-visible:ring-0 focus-visible:ring-offset-0"
             >
-              Filtrer <ChevronDownIcon className="ml-2 h-4 w-4" />
+              Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent

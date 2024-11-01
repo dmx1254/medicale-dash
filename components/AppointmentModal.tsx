@@ -28,14 +28,14 @@ const AppointmentModal = ({
   phone: string;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [doctors, setDoctors] = useState<ActifRegisterDoctor[] | null>(null);
+  const [doctors, setDoctors] = useState<ActifRegisterDoctor[]>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const getDoctorsCall = async () => {
       try {
+        setLoading(true);
         const response = await fetch("/api/doctor", {
           method: "GET",
         });
@@ -46,8 +46,10 @@ const AppointmentModal = ({
 
         const data = await response.json();
         setDoctors(data);
+        setLoading(false);
       } catch (error: any) {
         setError(error.message);
+        setLoading(false);
       } finally {
         setLoading(false);
       }
@@ -85,7 +87,7 @@ const AppointmentModal = ({
           appointment={appointment}
           setOpen={setOpen}
           phone={phone}
-          doctors={doctors}
+          doctors={doctors ? doctors : []}
         />
       </DialogContent>
     </Dialog>

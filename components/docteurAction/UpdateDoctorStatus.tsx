@@ -43,6 +43,7 @@ const UpdateDoctorStatus = ({
   return (
     <div>
       <Switch
+        customColorSwitch={doctorStatus}
         checked={doctorStatus}
         className="data-[state=checked]:bg-yellow-900 data-[state=unchecked]:bg-dark-400"
         onCheckedChange={handleChangeCheck}

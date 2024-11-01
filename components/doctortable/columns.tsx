@@ -64,11 +64,11 @@ export const columns: ColumnDef<Patient>[] = [
     cell: ({ row }) => (
       <div className="">
         {row?.original.doctorStatus ? (
-          <span className="status-badge bg-yellow-900 text-yellow-500">
+          <span className="text-sm bg-dark-400 rounded-full text-center py-2 px-4 text-yellow-500">
             En service
           </span>
         ) : (
-          <span className="status-badge bg-red-600 text-red-500">
+          <span className="text-sm bg-dark-400 rounded-full text-center py-2 px-4 text-red-500">
             Hors service
           </span>
         )}

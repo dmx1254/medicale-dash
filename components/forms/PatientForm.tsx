@@ -62,7 +62,7 @@ const PatientForm = () => {
         },
       });
     } else {
-      router.push("/dashboard");
+      router.push("/dashboard?isAdmin=true");
     }
 
     // if (user) router.push("/patients/profile");

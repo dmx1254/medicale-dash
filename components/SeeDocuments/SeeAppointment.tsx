@@ -13,9 +13,9 @@ import { AppointModal } from "@/types/appwrite.types";
 import clsx from "clsx";
 import { dateFrToConvert, formatDateTime } from "@/lib/utils";
 
-const SeeAppointment = ({ data }: AppointModal) => {
+const SeeAppointment = ({ data }: { data: AppointModal }) => {
   const [open, setOpen] = useState<boolean>(false);
-//   console.log(data);
+  //   console.log(data);
   return (
     <div>
       <AlertDialog open={open} onOpenChange={setOpen}>
@@ -40,10 +40,9 @@ const SeeAppointment = ({ data }: AppointModal) => {
             <span className="font-semibold underline">
               {formatDateTime(data.schedule).dateTime}{" "}
             </span>
-            {data.status === "scheduled" || data.status === "scheduled"
-              ? "a été"
-              : "est en"}
-            &nbsp;<span
+            {data.status === "scheduled" ? "a été" : "est en"}
+            &nbsp;
+            <span
               className={clsx("underline", {
                 "text-[#15803d]": data.status === "scheduled",
                 "text-[#a16207]": data.status === "pending",
@@ -85,17 +84,16 @@ const SeeAppointment = ({ data }: AppointModal) => {
               <p className="text-14-regular">
                 Date de création :{" "}
                 <span className="text-white">
-                  {dateFrToConvert(data.createdAt)}
+                  {dateFrToConvert(data?.createdAt)}
                 </span>
               </p>
               <p className="text-14-regular">
                 Date de mise à jour le :{" "}
                 <span className="text-white">
-                  {dateFrToConvert(data.updatedAt)}
+                  {dateFrToConvert(data?.updatedAt)}
                 </span>
               </p>
             </div>
-           
           </div>
           <AlertDialogFooter className="flex w-full items-start justify-between gap-4">
             <button

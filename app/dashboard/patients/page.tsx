@@ -1,14 +1,42 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { columns } from "@/components/patientable/columns";
 import { DataTable } from "@/components/patientable/DataTable";
-import { getAllPatients } from "@/lib/actions/patient.actions";
+// import { getAllPatients } from "@/lib/actions/patient.actions";
 import PatientStatCard from "@/components/PatientStatCard";
 
 import { Users, UserCheck, TriangleAlert } from "lucide-react";
+import PatientSearch from "@/components/PatientSearch";
+import DateFilterPatient from "@/components/DateFilterPatient";
+import { getPatients } from "@/lib/api/patient";
+import LatestInvoicesSkeleton from "@/components/skelettons/skeletons";
 
-const PatientPage = async () => {
-  const { patients, patientsCount, patientsBan, patientsActif } =
-    await getAllPatients();
+const PatientPage = async ({
+  searchParams,
+}: {
+  searchParams?: {
+    patient?: string;
+    startDate?: string;
+    endDate?: string;
+    genre?: string;
+    identicationType?: string;
+    page?: number;
+  };
+}) => {
+  const patient = searchParams?.patient || "";
+  const startDate = searchParams?.startDate || "";
+  const endDate = searchParams?.endDate || "";
+  const genre = searchParams?.genre || "";
+  const identicationType = searchParams?.identicationType || "";
+  const currentPageStr = searchParams?.page || 1;
+  const currentPage = Number(currentPageStr);
+  const data = await getPatients(
+    patient,
+    startDate,
+    endDate,
+    genre,
+    identicationType,
+    currentPage
+  );
   //   console.log(allPatients);
 
   return (
@@ -23,7 +51,7 @@ const PatientPage = async () => {
         <section className="admin-stat">
           <PatientStatCard
             type="appointments"
-            count={patientsCount}
+            count={data?.patientsCount}
             label="Total Patients"
             w={32}
             h={32}
@@ -31,7 +59,7 @@ const PatientPage = async () => {
           />
           <PatientStatCard
             type="pending"
-            count={patientsActif}
+            count={data?.patientsActif}
             label="Patients Actif"
             icon={<UserCheck size={32} className="text-[#3b82f6]" />}
             w={32}
@@ -39,14 +67,29 @@ const PatientPage = async () => {
           />
           <PatientStatCard
             type="cancelled"
-            count={patientsBan}
+            count={data?.patientsBan}
             label="Patients Bannis"
             icon={<TriangleAlert size={32} className="text-[#FFD147]" />}
             w={32}
             h={32}
           />
         </section>
-        <DataTable columns={columns} data={patients} />
+        <section className="w-full flex items-center justify-between">
+          <PatientSearch doctors={null || []} />
+          <DateFilterPatient />
+        </section>
+        <Suspense
+          key={patient + currentPage}
+          fallback={<LatestInvoicesSkeleton />}
+        >
+          <DataTable
+            totalPages={data?.totalPages || 1}
+            itemsperPage={8}
+            currentPage={currentPage}
+            columns={columns}
+            data={data?.patients}
+          />
+        </Suspense>
       </main>
     </div>
   );

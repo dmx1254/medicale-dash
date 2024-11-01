@@ -19,6 +19,7 @@ import {
 import { Appointment } from "@/types/appwrite.types";
 import { ActifRegisterDoctor, Status } from "@/types";
 import { toast } from "sonner";
+import { Skeleton } from "../ui/skeleton";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -39,6 +40,7 @@ const AppointmentForm = ({
   name,
   phone,
   doctors,
+  loading,
 }: {
   type: "create" | "cancel" | "schedule";
   userId: string;
@@ -48,6 +50,7 @@ const AppointmentForm = ({
   name: string;
   phone: string;
   doctors: ActifRegisterDoctor[];
+  loading?: boolean;
 }) => {
   const translateStatusToFr = (status: string): string => {
     return status === "pending"
@@ -123,10 +126,10 @@ const AppointmentForm = ({
           appointmentId: appointment?._id,
           phone,
           appointment: {
-            primaryPhysician: values?.primaryPhysician,
-            schedule: new Date(values?.schedule),
+            primaryPhysician: values.primaryPhysician,
+            schedule: new Date(values.schedule),
             status: status as Status,
-            cancellationReason: values?.cancellationReason,
+            cancellationReason: values?.cancellationReason || "",
           },
           type,
         };
@@ -212,6 +215,7 @@ const AppointmentForm = ({
                 </SelectItem>
               ))}
             </CustomFormField>
+
             <CustomFormField
               fieldType={FormFieldType.DATE_PICKER}
               control={form.control}

@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { getPrimaryPhysicianPicture } from "@/lib/utils";
+import { chooseRandomColor, getPrimaryPhysicianPicture } from "@/lib/utils";
 import Image from "next/image";
 import { Patient } from "@/types";
 import DeletePatient from "../patientActtion/DeletePatient";
@@ -40,23 +40,7 @@ export const columns: ColumnDef<Patient>[] = [
     accessorKey: "gender",
     header: "Genre",
     cell: ({ row }) => (
-      <p
-        // style={{
-        //   color:
-        //     row?.original.gender === "homme"
-        //       ? "#a78bfa"
-        //       : row.original.gender === "femme"
-        //       ? "#f472b6"
-        //       : "#22c55e",
-        //   backgroundColor:
-        //     row?.original.gender === "homme"
-        //       ? "#4c1d95"
-        //       : row.original.gender === "femme"
-        //       ? "#831843"
-        //       : "#14532d",
-        // }}
-        className="status-12-semibold  capitalize status-badge"
-      >
+      <p className="status-12-semibold  capitalize status-badge">
         {row?.original.gender}
       </p>
     ),
@@ -72,7 +56,7 @@ export const columns: ColumnDef<Patient>[] = [
     accessorKey: "identificationType",
     header: "Type d'identification",
     cell: ({ row }) => (
-      <p className="text-14-medium capitalize text-[#f97316] status-badge bg-[#431407]">
+      <p className="text-14-medium capitalize text-violet-700 text-center p-2 rounded-full bg-dark-400">
         {row?.original.identificationType}
       </p>
     ),
@@ -80,9 +64,19 @@ export const columns: ColumnDef<Patient>[] = [
   {
     accessorKey: "phone",
     header: "Téléphone",
-    cell: ({ row }) => (
-      <p className="text-14-medium whitespace-nowrap">{row?.original.phone}</p>
-    ),
+    cell: ({ row }) => {
+      const randomColor = chooseRandomColor();
+      return (
+        <p
+          className="text-14-medium whitespace-nowrap bg-dark-400 text-center rounded-full p-2"
+          style={{
+            color: `${randomColor}`,
+          }}
+        >
+          {row?.original.phone}
+        </p>
+      );
+    },
   },
   {
     accessorKey: "status",
@@ -94,7 +88,7 @@ export const columns: ColumnDef<Patient>[] = [
             Banni
           </span>
         ) : (
-          <span className="status-badge bg-blue-600 text-blue-500">Actif</span>
+          <span className="text-blue-500">Actif</span>
         )}
       </div>
     ),
