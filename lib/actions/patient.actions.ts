@@ -47,11 +47,7 @@ export const getPatient = async (userId: string) => {
 export const registerPatient = async (patient: UserRegister) => {
   try {
     const response = await createPatient(patient);
-    if (response.error) {
-      throw new Error(response.error);
-    } else {
-      return response;
-    }
+    return JSON.parse(JSON.stringify(response));
   } catch (error: any) {
     throw new Error(error);
   }

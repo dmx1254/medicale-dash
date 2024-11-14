@@ -11,6 +11,7 @@ import PatientAction from "./PatientAction";
 import { Button } from "../ui/button";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Badge } from "../ui/badge";
+import PhoneNumberDisplay from "../phone-number-display";
 
 export const columns: ColumnDef<Patient>[] = [
   {
@@ -57,7 +58,7 @@ export const columns: ColumnDef<Patient>[] = [
     accessorKey: "identificationType",
     header: "Type d'identification",
     cell: ({ row }) => (
-      <p className="text-14-medium capitalize text-violet-700 text-center p-2 rounded-full bg-dark-400">
+      <p className="text-14-medium capitalize bg-amber-900 text-center p-2 rounded-full text-amber-200">
         {row?.original.identificationType}
       </p>
     ),
@@ -66,17 +67,7 @@ export const columns: ColumnDef<Patient>[] = [
     accessorKey: "phone",
     header: "Téléphone",
     cell: ({ row }) => {
-      const randomColor = chooseRandomColor();
-      return (
-        <p
-          className="text-14-medium whitespace-nowrap bg-dark-400 text-center rounded-full p-2"
-          style={{
-            color: `${randomColor}`,
-          }}
-        >
-          {row?.original.phone}
-        </p>
-      );
+      return <PhoneNumberDisplay phoneNumber={row?.original.phone} />;
     },
   },
   {
