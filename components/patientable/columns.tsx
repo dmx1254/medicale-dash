@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { chooseRandomColor, getPrimaryPhysicianPicture } from "@/lib/utils";
+import { chooseRandomColor, cn, getPrimaryPhysicianPicture } from "@/lib/utils";
 import Image from "next/image";
 import { Patient } from "@/types";
 import DeletePatient from "../patientActtion/DeletePatient";
@@ -10,6 +10,7 @@ import UpdatePatient from "../patientActtion/UpdatePatient";
 import PatientAction from "./PatientAction";
 import { Button } from "../ui/button";
 import { CaretSortIcon } from "@radix-ui/react-icons";
+import { Badge } from "../ui/badge";
 
 export const columns: ColumnDef<Patient>[] = [
   {
@@ -82,15 +83,31 @@ export const columns: ColumnDef<Patient>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <div className="">
-        {row?.original.isBan ? (
-          <span className="status-badge bg-yellow-900 text-yellow-500">
-            Banni
-          </span>
-        ) : (
-          <span className="text-blue-500">Actif</span>
+      <Badge
+        className={cn(
+          "px-2 py-1 text-xs font-medium",
+          row?.original.online
+            ? "bg-green-900 text-green-200"
+            : "bg-red-900 text-red-200"
         )}
-      </div>
+      >
+        {row?.original.online ? (
+          <>
+            <span className="mr-1.5 flex h-2 w-2">
+              <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+            </span>
+            En ligne
+          </>
+        ) : (
+          <>
+            <span className="mr-1.5 flex h-2 w-2">
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500"></span>
+            </span>
+            Hors ligne
+          </>
+        )}
+      </Badge>
     ),
   },
   {

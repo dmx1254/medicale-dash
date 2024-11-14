@@ -114,6 +114,7 @@ export interface Patient {
   role?: string;
   profile?: string;
   doctorStatus?: boolean;
+  online?: boolean;
   speciality?: string;
   createdAt: string;
   updatedAt: string;
