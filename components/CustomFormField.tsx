@@ -1,4 +1,6 @@
 "use client";
+
+import { useState } from "react";
 import {
   FormControl,
   FormDescription,
@@ -21,6 +23,7 @@ import { fr } from "date-fns/locale";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
+import { LucideIcon } from "lucide-react";
 
 interface CustomProps {
   control: Control<any>;
@@ -35,6 +38,8 @@ interface CustomProps {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
+  IconAbsView?: LucideIcon;
+  IconAbsOff?: LucideIcon;
   renderSkeleton?: (field: any) => React.ReactNode;
 }
 
@@ -47,11 +52,14 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
     showTimeSelect,
     dateFormat,
     renderSkeleton,
+    IconAbsView,
+    IconAbsOff,
   } = props;
+  const [isView, setIsView] = useState<boolean>(false);
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
+        <div className="w-full relative flex rounded-md border border-dark-500 bg-dark-400">
           {iconSrc && (
             <Image
               src={iconSrc}
@@ -66,13 +74,24 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               placeholder={placeholder}
               type={
                 props.name === "password" || props.name === "confirmPassword"
-                  ? "password"
+                  ? isView
+                    ? "text"
+                    : "password"
                   : "text"
               }
               {...field}
               className="shad-input border-0"
             />
           </FormControl>
+          <button
+            className="outline-none border-none absolute left-[92%] top-[22%] text-[#CDE9DF]"
+            onClick={() => setIsView((prevView) => !prevView)}
+            type="button"
+          >
+            {isView
+              ? IconAbsView && <IconAbsView size={22} />
+              : IconAbsOff && <IconAbsOff size={22} />}
+          </button>
         </div>
       );
 

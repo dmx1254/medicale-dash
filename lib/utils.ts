@@ -1,3 +1,4 @@
+import { ChartLegend } from "@/components/ui/chart";
 import { Doctors } from "@/constants";
 import { Doc, SESSIONAUTH } from "@/types";
 import { type ClassValue, clsx } from "clsx";
@@ -220,3 +221,16 @@ export const chooseRandomColor = (): string => {
   const iterate = Math.floor(Math.random() * randomColors.length);
   return randomColors[iterate];
 };
+
+export interface ChartLegendDataType {
+  month: string;
+  desktop: number;
+  mobile: number;
+}
+
+
+export interface ChartDesktopType {
+  desktop: number;
+  month: string;
+  fill: string;
+}

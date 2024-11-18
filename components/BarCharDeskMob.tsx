@@ -19,17 +19,18 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { ChartLegendDataType } from "@/lib/utils";
 
 export const description = "A stacked bar chart with a legend";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
+// const chartData = [
+//   { month: "January", desktop: 186, mobile: 80 },
+//   { month: "February", desktop: 305, mobile: 200 },
+//   { month: "March", desktop: 237, mobile: 120 },
+//   { month: "April", desktop: 73, mobile: 190 },
+//   { month: "May", desktop: 209, mobile: 130 },
+//   { month: "June", desktop: 214, mobile: 140 },
+// ];
 
 const chartConfig = {
   desktop: {
@@ -42,9 +43,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function BarCharDeskMob() {
+export function BarCharDeskMob({
+  chartData,
+}: {
+  chartData: ChartLegendDataType[];
+}) {
+  // console.log(chartData);
   return (
-    <Card className="w-1/2 max-h-96 border-dark-500">
+    <Card className="w-full md:w-1/2 max-h-[420px] md:max-h-[400px] border-dark-500">
       <CardHeader>
         <CardTitle>Appareils utilises par visite</CardTitle>
         <CardDescription>Janvier - Decembre 2024</CardDescription>
@@ -84,9 +90,9 @@ export function BarCharDeskMob() {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start text-sm">
+      <CardFooter className="flex-col items-start text-xs">
         <div className="flex font-medium leading-none">
-          Trending up by 5.2% this month{" "}
+        Tendance en hausse de 5,2% ce mois-ci{" "}
           <TrendingUp className="h-4 w-4 text-green-700" />
         </div>
       </CardFooter>

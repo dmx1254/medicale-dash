@@ -4,6 +4,7 @@ import { connectDB } from "../db";
 import PatientModel from "../models/patient.model";
 import bcrypt from "bcrypt";
 import { parseStringify } from "../utils";
+import VisitModel from "../models/visit.model";
 connectDB();
 
 export async function getDocteurAndDetails() {
@@ -136,5 +137,159 @@ export async function getActifDoctorsInPatientForm() {
     return parseStringify(isActifDoctors);
   } catch (error: any) {
     throw new Error(error);
+  }
+}
+
+export async function getPatientsDevices() {
+  try {
+    const result = await PatientModel.aggregate([
+      {
+        $group: {
+          _id: {
+            month: { $month: "$createdAt" },
+            deviceUsed: "$deviceUsed",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.month",
+          devices: {
+            $push: {
+              device: "$_id.deviceUsed",
+              count: "$count",
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          month: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$_id", 1] }, then: "January" },
+                { case: { $eq: ["$_id", 2] }, then: "February" },
+                { case: { $eq: ["$_id", 3] }, then: "March" },
+                { case: { $eq: ["$_id", 4] }, then: "April" },
+                { case: { $eq: ["$_id", 5] }, then: "May" },
+                { case: { $eq: ["$_id", 6] }, then: "June" },
+                { case: { $eq: ["$_id", 7] }, then: "July" },
+                { case: { $eq: ["$_id", 8] }, then: "August" },
+                { case: { $eq: ["$_id", 9] }, then: "September" },
+                { case: { $eq: ["$_id", 10] }, then: "October" },
+                { case: { $eq: ["$_id", 11] }, then: "November" },
+                { case: { $eq: ["$_id", 12] }, then: "December" },
+              ],
+              default: "Unknown",
+            },
+          },
+          desktop: {
+            $reduce: {
+              input: {
+                $filter: {
+                  input: "$devices",
+                  as: "device",
+                  cond: { $eq: ["$$device.device", "Desktop"] },
+                },
+              },
+              initialValue: 0,
+              in: { $add: ["$$value", "$$this.count"] },
+            },
+          },
+          mobile: {
+            $reduce: {
+              input: {
+                $filter: {
+                  input: "$devices",
+                  as: "device",
+                  cond: { $eq: ["$$device.device", "Mobile"] },
+                },
+              },
+              initialValue: 0,
+              in: { $add: ["$$value", "$$this.count"] },
+            },
+          },
+        },
+      },
+      { $sort: { month: 1 } },
+    ]);
+
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function getDesktopVisits() {
+  try {
+    const result = await VisitModel.aggregate([
+      // 1. Regrouper par mois
+      {
+        $group: {
+          _id: { $month: "$createdAt" }, // Obtenir le mois à partir de `createdAt`
+          desktop: { $sum: 1 }, // Compter le nombre de visites pour chaque mois
+        },
+      },
+      // 2. Projeter (convertir) les mois en noms
+      {
+        $project: {
+          _id: 0, // Supprimer l'ID par défaut
+          month: {
+            $switch: {
+              branches: [
+                { case: { $eq: ["$_id", 1] }, then: "january" },
+                { case: { $eq: ["$_id", 2] }, then: "february" },
+                { case: { $eq: ["$_id", 3] }, then: "march" },
+                { case: { $eq: ["$_id", 4] }, then: "april" },
+                { case: { $eq: ["$_id", 5] }, then: "may" },
+                { case: { $eq: ["$_id", 6] }, then: "june" },
+                { case: { $eq: ["$_id", 7] }, then: "july" },
+                { case: { $eq: ["$_id", 8] }, then: "august" },
+                { case: { $eq: ["$_id", 9] }, then: "september" },
+                { case: { $eq: ["$_id", 10] }, then: "october" },
+                { case: { $eq: ["$_id", 11] }, then: "november" },
+                { case: { $eq: ["$_id", 12] }, then: "december" },
+              ],
+              default: "unknown", // Cas par défaut
+            },
+          },
+          desktop: 1, // Inclure le champ `desktop`
+          fill: {
+            $concat: [
+              "var(--color-", // Préfixe pour les couleurs
+              {
+                $switch: {
+                  branches: [
+                    { case: { $eq: ["$_id", 1] }, then: "january" },
+                    { case: { $eq: ["$_id", 2] }, then: "february" },
+                    { case: { $eq: ["$_id", 3] }, then: "march" },
+                    { case: { $eq: ["$_id", 4] }, then: "april" },
+                    { case: { $eq: ["$_id", 5] }, then: "may" },
+                    { case: { $eq: ["$_id", 6] }, then: "june" },
+                    { case: { $eq: ["$_id", 7] }, then: "july" },
+                    { case: { $eq: ["$_id", 8] }, then: "august" },
+                    { case: { $eq: ["$_id", 9] }, then: "september" },
+                    { case: { $eq: ["$_id", 10] }, then: "october" },
+                    { case: { $eq: ["$_id", 11] }, then: "november" },
+                    { case: { $eq: ["$_id", 12] }, then: "december" },
+                  ],
+                  default: "unknown",
+                },
+              },
+              ")",
+            ],
+          },
+        },
+      },
+      // 3. Trier par mois
+      { $sort: { _id: 1 } },
+    ]);
+
+    return result;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 }

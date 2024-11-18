@@ -25,16 +25,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ChartDesktopType } from "@/lib/utils";
 
 export const description = "An interactive pie chart";
 
-const desktopData = [
-  { month: "january", desktop: 186, fill: "var(--color-january)" },
-  { month: "february", desktop: 305, fill: "var(--color-february)" },
-  { month: "march", desktop: 237, fill: "var(--color-march)" },
-  { month: "april", desktop: 173, fill: "var(--color-april)" },
-  { month: "may", desktop: 209, fill: "var(--color-may)" },
-];
+// const desktopData = [
+//   { month: "january", desktop: 186, fill: "var(--color-january)" },
+//   { month: "february", desktop: 305, fill: "var(--color-february)" },
+//   { month: "march", desktop: 237, fill: "var(--color-march)" },
+//   { month: "april", desktop: 173, fill: "var(--color-april)" },
+//   { month: "may", desktop: 209, fill: "var(--color-may)" },
+// ];
 
 const chartConfig = {
   visitors: {
@@ -68,7 +69,11 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function PieChartVisitors() {
+export function PieChartVisitors({
+  desktopData,
+}: {
+  desktopData: ChartDesktopType[];
+}) {
   const id = "pie-interactive";
   const [activeMonth, setActiveMonth] = React.useState(desktopData[0].month);
 
@@ -81,7 +86,7 @@ export function PieChartVisitors() {
   return (
     <Card
       data-chart={id}
-      className="w-full flex flex-col max-h-96 border-dark-500"
+      className="w-full flex flex-col max-h-[400px] lg:h-[400px] border-dark-500"
     >
       <ChartStyle id={id} config={chartConfig} />
       <CardHeader className="flex-row items-start space-y-0 pb-0">
@@ -187,7 +192,7 @@ export function PieChartVisitors() {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-white font-semibold"
                         >
-                          Visitors
+                          Visiteurs
                         </tspan>
                       </text>
                     );

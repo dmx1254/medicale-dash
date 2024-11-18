@@ -145,6 +145,18 @@ const patientSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    deviceUsed: {
+      type: String,
+      default: "",
+    },
+    lastConnexion: {
+      type: String,
+      default: "",
+    },
+    lastIpUsed: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,

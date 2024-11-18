@@ -24,6 +24,7 @@ import FileUploader from "../FileUploader";
 import { convertFileToBase64 } from "@/lib/utils";
 import { toast } from "sonner";
 import { ActifRegisterDoctor } from "@/types";
+import { Eye, EyeOff } from "lucide-react";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -343,7 +344,9 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
             name="password"
             label="Mot de passe"
             placeholder="Mot de passe"
-            iconSrc="/assets/icons/password.svg"
+            iconSrc="/assets/icons/locker.svg"
+            IconAbsView={Eye}
+            IconAbsOff={EyeOff}
           />
           <CustomFormField
             fieldType={FormFieldType.INPUT}
@@ -351,7 +354,9 @@ const RegisterForm = ({ doctors }: { doctors: ActifRegisterDoctor[] }) => {
             name="confirmPassword"
             label="Confirmer votre mot de passe"
             placeholder="Confirmer votre mot de passe"
-            iconSrc="/assets/icons/password.svg"
+            iconSrc="/assets/icons/locker.svg"
+            IconAbsView={Eye}
+            IconAbsOff={EyeOff}
           />
         </div>
         <section className="space-y-4">

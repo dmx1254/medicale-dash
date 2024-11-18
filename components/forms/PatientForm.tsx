@@ -12,6 +12,7 @@ import { UserFormValidation } from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -97,8 +98,10 @@ const PatientForm = () => {
           name="password"
           label="Mot de passe"
           placeholder="mot de passe"
-          iconSrc="/assets/icons/password.svg"
+          iconSrc="/assets/icons/locker.svg"
           iconAlt="password"
+          IconAbsView={Eye}
+          IconAbsOff={EyeOff}
         />
         <SubmitButton isLoading={isLoading}>Commencer</SubmitButton>
       </form>

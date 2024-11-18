@@ -15,7 +15,12 @@ import {
   updateOneSingleDoctor,
   updateSingleDoctorStatus,
 } from "../api/patient";
-import { createNewDoctor, getDocteurAndDetails } from "../api/doctor";
+import {
+  createNewDoctor,
+  getDesktopVisits,
+  getDocteurAndDetails,
+  getPatientsDevices,
+} from "../api/doctor";
 import {
   CreateUserParams,
   DoctorCreating,
@@ -195,6 +200,24 @@ export const getPatientCounts = async () => {
   try {
     const allPatients = await getAllPatientsCounts();
     return parseStringify(allPatients);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getPatientDevicesTypes = async () => {
+  try {
+    const results = await getPatientsDevices();
+    return parseStringify(results);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getPatientVisit = async () => {
+  try {
+    const results = await getDesktopVisits();
+    return parseStringify(results);
   } catch (error) {
     console.error(error);
   }

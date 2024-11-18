@@ -39,18 +39,6 @@ const RendezvousPage = async ({
     currentPage
   );
   const doctors = await getDoctorsWithoutField();
-  // console.log(appointments.allAppointments);
-  // console.log("When i change page");
-  // console.log("Start date: " + startDate);
-  // const scheduledCount = appointments.allAppointments.filter(
-  //   (app: AppointmentResponse) => app.status === "scheduled"
-  // );
-  // const pendingCount = appointments.allAppointments.filter(
-  //   (app: AppointmentResponse) => app.status === "pending"
-  // );
-  // const cancelledCount = appointments.allAppointments.filter(
-  //   (app: AppointmentResponse) => app.status === "cancelled"
-  // );
 
   return (
     <div className="mx-auto flex w-full flex-col space-y-14">
