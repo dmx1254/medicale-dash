@@ -1,8 +1,10 @@
 "use server";
 
-import { client, pusher } from "../db";
-
-import { formatDateTime, parseStringify } from "../utils";
+import {
+  formatDateTime,
+  formatPhoneNumberOrange,
+  parseStringify,
+} from "../utils";
 import { revalidatePath } from "next/cache";
 import { CreateAppointmentParams, UpdateAppointmentParams } from "@/types";
 import {
@@ -21,7 +23,6 @@ export const createAppointment = async (
 ) => {
   try {
     const newAppointment = await createPatientAppointment(appointment);
-    pusher.trigger("notifications", "appointment", { message: newAppointment });
     return parseStringify(newAppointment);
   } catch (error: any) {
     console.error(error);
@@ -46,54 +47,6 @@ export const getUserAppointments = async (userId: string) => {
   }
 };
 
-// export const getRecentAppointmentList = async () => {
-//   try {
-//     const appointments = await databases.listDocuments(
-//       "668ac4440030872f1ffc",
-//       "668ac5130005ffa78400",
-//       [Query.orderDesc("$createdAt")]
-//     );
-
-//     const initialCounts = {
-//       scheduledCount: 0,
-//       pendingCount: 0,
-//       cancelledCount: 0,
-//     };
-
-//     const counts = (appointments.documents as Appointment[]).reduce(
-//       (acc, appointment) => {
-//         if (appointment.status === "scheduled") {
-//           acc.scheduledCount += 1;
-//         } else if (appointment.status === "pending") {
-//           acc.pendingCount += 1;
-//         } else if (appointment.status === "cancelled") {
-//           acc.cancelledCount += 1;
-//         }
-//         return acc;
-//       },
-//       initialCounts
-//     );
-//     const data = {
-//       totalCount: appointments.total,
-//       ...counts,
-//       documents: appointments.documents,
-//     };
-//     return parseStringify(data);
-//   } catch (error: any) {
-//     throw new Error(error.message);
-//   }
-// };
-
-// export const getAppointmentList = async () => {
-//   try {
-//     const patient="";
-//     const appointments = await getAllAppointmentList(patient);
-//     return parseStringify(appointments);
-//   } catch (error: any) {
-//     console.error(error);
-//   }
-// };
-
 export const updateAppointment = async ({
   appointmentId,
   userId,
@@ -112,8 +65,6 @@ export const updateAppointment = async ({
       throw new Error("Rendez-vous introuvable");
     }
 
-    revalidatePath("/admin");
-
     // Utiliser JSON.stringify et JSON.parse pour le débogage
     const updatedAppStringified = JSON.stringify(updatedAppointment);
     const updatedAppParsed = JSON.parse(updatedAppStringified);
@@ -124,6 +75,7 @@ export const updateAppointment = async ({
       updatedAppParsed.primaryPhysician,
       updatedAppParsed.cancellationReason
     );
+    revalidatePath("/admin");
     return updatedAppParsed;
   } catch (error: any) {
     // Utiliser console.error pour une meilleure visibilité des erreurs
@@ -142,6 +94,29 @@ export const deleteAppointment = async (appointmentId: string) => {
   }
 };
 
+const getAccessToken = async () => {
+  const credentials = `${process.env.ORANGE_CLIENT_ID}:${process.env.ORANGE_CLIENT_SECRET}`;
+  const encodedCredentials = Buffer.from(credentials).toString("base64");
+
+  const response = await fetch("https://api.orange.com/oauth/v3/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      Authorization: `Basic ${encodedCredentials}`,
+    },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch access token");
+  }
+
+  const data = await response.json();
+  return data.access_token;
+};
+
 export const sendSMSNotification = async (
   phone: string,
   type: string,
@@ -149,22 +124,49 @@ export const sendSMSNotification = async (
   primaryPhysician: string,
   cancellationReason: string
 ) => {
+  const accessToken = await getAccessToken();
   try {
-    const smsMessage = `
-        Bonjour, c'est MedicaleCare.${
-          type === "schedule"
-            ? `Votre rendez-vous a été programmé le ${
-                formatDateTime(schedule!).dateTime
-              } avec le Dr. ${primaryPhysician}`
-            : `Nous avons le regret de vous informer que votre rendez-vous a été annulé pour la raison suivante:${cancellationReason}`
-        }`;
+    const smsMessage = `Bonjour, c'est MedicaleCare.${
+      type === "schedule"
+        ? `Votre rendez-vous a été programmé le ${
+            formatDateTime(schedule!).dateTime
+          } avec le Dr. ${primaryPhysician}`
+        : `Nous avons le regret de vous informer que votre rendez-vous a été annulé pour la raison suivante:${cancellationReason}`
+    }`;
 
-    const messageR = await client.messages.create({
-      body: smsMessage,
-      to: phone,
-      from: "+13374014773",
-    });
-    return messageR;
+    const messageObject = {
+      outboundSMSMessageRequest: {
+        address: `tel:${phone}`,
+        outboundSMSTextMessage: {
+          message: smsMessage,
+        },
+        senderAddress: "tel:+221778417586",
+        // senderName: "Medicalecare",
+      },
+    };
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`, // Utilisation du token
+      },
+      body: JSON.stringify(messageObject),
+    };
+
+    const response = await fetch(
+      "https://api.orange.com/smsmessaging/v1/outbound/tel:+221778417586/requests",
+      options
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Erreur lors de l'envoi du SMS :", error);
+      throw new Error("La requête SMS a échoué");
+    }
+
+    const data = await response.json();
+    // console.log("SMS envoyé avec succès :", data);
   } catch (error: any) {
     console.log(error);
     console.error(error);

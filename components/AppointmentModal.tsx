@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import AppointmentForm from "./forms/AppointmentForm";
-import { AppointModal } from "@/types/appwrite.types";
+import { AppointModal, Appointment } from "@/types/appwrite.types";
 import { ActifRegisterDoctor } from "@/types";
 
 const AppointmentModal = ({
@@ -22,10 +22,10 @@ const AppointmentModal = ({
   phone,
 }: {
   type: "schedule" | "cancel";
-  patientId: string;
+  patientId: string | undefined;
   userId: string;
-  appointment: AppointModal;
-  phone: string;
+  appointment: Appointment;
+  phone: string | undefined;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [doctors, setDoctors] = useState<ActifRegisterDoctor[]>();

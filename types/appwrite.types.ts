@@ -25,8 +25,8 @@ export interface Patient {
 }
 
 export interface Appointment {
-  _id: string;
-  patient: Patient;
+  _id?: string;
+  patient?: Patient;
   schedule: Date;
   status: Status;
   primaryPhysician: string;
@@ -34,12 +34,14 @@ export interface Appointment {
   note: string;
   userId: string;
   cancellationReason?: string;
+  patientId?: string;
+  phone?: string;
 }
 
 export interface AppointModal {
   _id?: string;
   userId: string;
-  patientId: string;
+  patientId?: string;
   primaryPhysician?: string;
   primaryPhysicianId: string;
   schedule: Date;

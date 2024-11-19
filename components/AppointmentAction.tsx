@@ -21,11 +21,11 @@ import {
 
 import { toast } from "sonner";
 import { MoreHorizontal } from "lucide-react";
-import { AppointModal } from "@/types/appwrite.types";
+import { Appointment } from "@/types/appwrite.types";
 import { deleteAppointment } from "@/lib/actions/appointment.actions";
 import SeeAppointment from "./SeeDocuments/SeeAppointment";
 
-const AppointmentAction = ({ data }: { data: AppointModal }) => {
+const AppointmentAction = ({ data }: { data: Appointment }) => {
   const [open, setOpen] = useState<boolean>(false);
   //   console.log(data);
 

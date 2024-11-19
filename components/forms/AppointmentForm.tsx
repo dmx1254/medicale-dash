@@ -44,11 +44,11 @@ const AppointmentForm = ({
 }: {
   type: "create" | "cancel" | "schedule";
   userId: string;
-  patientId: string;
+  patientId: string | undefined;
   appointment: Appointment;
   setOpen: (open: boolean) => void;
-  name: string;
-  phone: string;
+  name?: string;
+  phone: string | undefined;
   doctors: ActifRegisterDoctor[];
   loading?: boolean;
 }) => {
@@ -95,63 +95,69 @@ const AppointmentForm = ({
     }
 
     try {
-      if (type === "create" && patientId) {
-        const appointmentData = {
-          userId,
-          patientId,
-          primaryPhysician: values.primaryPhysician,
-          primaryPhysicianId: "",
-          schedule: new Date(values.schedule),
-          reason: values.reason,
-          note: values.note,
-          name,
-          phone,
-          status: status as Status,
-        };
-        const appointment = await createAppointment(appointmentData);
-
-        if (appointment) {
-          form.reset();
-          router.push(
-            `/patients/${userId}/success?appointmentId=${appointment._id}`
-          );
-        } else {
-          toast.error("Error: Quelque chose s'est mal passée", {
-            style: { color: "red" },
-          });
-        }
-      } else {
-        const appointmentToUpdate = {
-          userId,
-          appointmentId: appointment?._id,
-          phone,
-          appointment: {
+      if (patientId && phone ) {
+        if (type === "create") {
+          const appointmentData = {
+            userId,
+            patientId,
             primaryPhysician: values.primaryPhysician,
+            primaryPhysicianId: "",
             schedule: new Date(values.schedule),
+            reason: values.reason,
+            note: values.note,
+            name: name || "",
+            phone,
             status: status as Status,
-            cancellationReason: values?.cancellationReason || "",
-          },
-          type,
-        };
+          };
+          const appointment = await createAppointment(appointmentData);
 
-        const updatedAppointment = await updateAppointment(appointmentToUpdate);
-        if (updatedAppointment) {
-          setOpen(false);
-          form.reset();
-          toast.success(
-            `Le rendez-vous avec ${
-              updatedAppointment.name
-            } a été ${translateStatusToFr(
-              updatedAppointment.status
-            )} avec succès.`,
-            {
-              style: {
-                color: "#22c55e",
-                background: "#0D0F10",
-                border: "1px solid #363A3D",
+          if (appointment) {
+            form.reset();
+            router.push(
+              `/patients/${userId}/success?appointmentId=${appointment._id}`
+            );
+          } else {
+            toast.error("Error: Quelque chose s'est mal passée", {
+              style: { color: "red" },
+            });
+          }
+        } else {
+          if (appointment?._id) {
+            const appointmentToUpdate = {
+              userId,
+              appointmentId: appointment?._id,
+              phone,
+              appointment: {
+                primaryPhysician: values.primaryPhysician,
+                schedule: new Date(values.schedule),
+                status: status as Status,
+                cancellationReason: values?.cancellationReason || "",
               },
+              type,
+            };
+
+            const updatedAppointment = await updateAppointment(
+              appointmentToUpdate
+            );
+            if (updatedAppointment) {
+              setOpen(false);
+              form.reset();
+              toast.success(
+                `Le rendez-vous avec ${
+                  updatedAppointment.name
+                } a été ${translateStatusToFr(
+                  updatedAppointment.status
+                )} avec succès.`,
+                {
+                  style: {
+                    color: "#22c55e",
+                    background: "#0D0F10",
+                    border: "1px solid #363A3D",
+                  },
+                }
+              );
             }
-          );
+          }
         }
       }
     } catch (error: any) {

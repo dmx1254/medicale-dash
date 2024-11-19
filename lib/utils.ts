@@ -234,3 +234,8 @@ export interface ChartDesktopType {
   month: string;
   fill: string;
 }
+
+
+export const formatPhoneNumberOrange = (phone: string): string => {
+  return `tel:\\+${phone.replace("+", "")}`;
+};
