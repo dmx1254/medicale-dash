@@ -1,42 +1,28 @@
 // store/notificationStore.ts
 import { create } from "zustand";
-import { ActifRegisterDoctor, AppointmentResponse } from "@/types";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { Patient } from "@/types";
 
 // Interface pour le store
-interface NotificationState {
-  appointmentsNotifs: AppointmentResponse[];
-  totalNotif: number;
-  addNotification: (notification: AppointmentResponse) => void;
+interface MyPatient {
+  patient: Patient | null;
+  addPatient: (patient: Patient) => void;
 }
 
-interface Doctors {
-  doctors: ActifRegisterDoctor[];
-  getAllDoctorsFromZustand: (alldoctors: ActifRegisterDoctor[]) => void;
-}
-
-type CombineState = NotificationState & Doctors;
+type CombineState = MyPatient;
 
 // Créez le store Zustand
-const useNotificationStore = create<CombineState>((set) => ({
-  appointmentsNotifs: [],
-  totalNotif: 0,
-  addNotification: (notification: AppointmentResponse) =>
-    set((state) => {
-      const newNotifications = [...state.appointmentsNotifs, notification];
-      // Exécuter la notification sonore
-      return {
-        appointmentsNotifs: newNotifications,
-        totalNotif: newNotifications.length,
-      };
+const myStore = create<CombineState>()(
+  persist(
+    (set) => ({
+      patient: null,
+      addPatient: (patient) => set({ patient: patient }),
     }),
+    {
+      name: "medicale-dash",
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
 
-  doctors: [],
-  getAllDoctorsFromZustand: (alldoctors: ActifRegisterDoctor[]) =>
-    set(() => {
-      return {
-        doctors: alldoctors,
-      };
-    }),
-}));
-
-export default useNotificationStore;
+export default myStore;

@@ -37,7 +37,8 @@ const PatientPage = async ({
     identicationType,
     currentPage
   );
-  //   console.log(allPatients);
+
+  // console.log(data);
 
   return (
     <div className="mx-auto flex w-full flex-col space-y-14">
@@ -60,8 +61,8 @@ const PatientPage = async ({
           <PatientStatCard
             type="pending"
             count={data?.patientsActif}
-            label="Patients Actif"
-            icon={<UserCheck size={32} className="text-[#3b82f6]" />}
+            label="Patients en ligne"
+            icon={<UserCheck size={32} className="text-[#24AE7C]" />}
             w={32}
             h={32}
           />

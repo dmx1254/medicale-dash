@@ -48,24 +48,52 @@ const chartConfig = {
     label: "Mobile",
   },
   january: {
-    label: "January",
+    label: "Janvier",
     color: "hsl(var(--chart-1))",
   },
   february: {
-    label: "February",
+    label: "Fevrier",
     color: "hsl(var(--chart-2))",
   },
   march: {
-    label: "March",
+    label: "Mars",
     color: "hsl(var(--chart-3))",
   },
   april: {
-    label: "April",
+    label: "Avril",
     color: "hsl(var(--chart-4))",
   },
   may: {
-    label: "May",
+    label: "Mai",
     color: "hsl(var(--chart-5))",
+  },
+  june: {
+    label: "Juin",
+    color: "hsl(243.4 75.4% 58.6%)",
+  },
+  july: {
+    label: "Juillet",
+    color: "hsl(40.6 96.1% 40.4%)",
+  },
+  august: {
+    label: "Août",
+    color: "hsl(262.1 83.3% 57.8%)",
+  },
+  september: {
+    label: "September",
+    color: "hsl(0 72.2% 50.6%)",
+  },
+  october: {
+    label: "Octobre",
+    color: "hsl(293.4 69.5% 48.8%)",
+  },
+  november: {
+    label: "Novembre",
+    color: "hsl(142.1 76.2% 36.3%)",
+  },
+  december: {
+    label: "Decembre",
+    color: "hsl(191.6 91.4% 36.5%)",
   },
 } satisfies ChartConfig;
 

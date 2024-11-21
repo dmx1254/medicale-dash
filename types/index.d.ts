@@ -79,7 +79,6 @@ export interface UserRegister {
   role?: string;
 }
 
-
 export interface Patient {
   _id: string;
   address: string;
@@ -116,6 +115,9 @@ export interface Patient {
   doctorStatus?: boolean;
   online?: boolean;
   speciality?: string;
+  lastConnexion?: string;
+  deviceUsed?: string;
+  lastIpUsed?: string;
   createdAt: string;
   updatedAt: string;
 }

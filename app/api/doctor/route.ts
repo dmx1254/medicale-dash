@@ -8,7 +8,6 @@ export async function GET() {
   try {
     const isActifDoctors = await PatientModel.find({
       role: "DOCTOR",
-      doctorStatus: true,
     })
       .select("_id")
       .select("name")

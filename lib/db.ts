@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const twilio = require("twilio");
 const Pusher = require("pusher");
 
 const globalWithMongoose = global as typeof global & {
@@ -30,7 +29,6 @@ export const connectDB = async (): Promise<string> => {
   cached.conn = await cached.promise;
   return "Connected to database with success";
 };
-export const client = new twilio(process.env.ACCOUNTSID, process.env.AUTHTOKEN);
 
 export const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID,

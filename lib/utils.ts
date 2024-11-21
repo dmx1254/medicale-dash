@@ -1,8 +1,6 @@
-import { ChartLegend } from "@/components/ui/chart";
 import { Doctors } from "@/constants";
-import { Doc, SESSIONAUTH } from "@/types";
+import { Doc } from "@/types";
 import { type ClassValue, clsx } from "clsx";
-import { redirect } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -228,14 +226,65 @@ export interface ChartLegendDataType {
   mobile: number;
 }
 
-
 export interface ChartDesktopType {
   desktop: number;
   month: string;
   fill: string;
 }
 
-
 export const formatPhoneNumberOrange = (phone: string): string => {
   return `tel:\\+${phone.replace("+", "")}`;
+};
+
+export interface MedicalFileProps {
+  patientData: {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    birthDate: string;
+    gender: string;
+    address: string;
+    occupation: string;
+    emergencyContactName: string;
+    emergencyContactNumber: string;
+    primaryPhysician: string;
+    insuranceProvider: string;
+    insurancePolicyNumber: string;
+    allergies: string;
+    bloodgroup: string;
+    online: boolean;
+    lastConnexion: string;
+    deviceUsed: string;
+  };
+}
+
+export interface FilterType {
+  type: string;
+  value: string;
+}
+
+export const calculateAge = (
+  birthDate: string | Date | undefined
+): number | null => {
+  if (!birthDate) return null; // Si aucune date n'est fournie, retourne null.
+
+  const birth = new Date(birthDate);
+  if (isNaN(birth.getTime())) return null; // Vérifie si la date est valide.
+
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+
+  // Vérifie si l'anniversaire de cette année est passé.
+  const hasHadBirthdayThisYear =
+    today.getMonth() > birth.getMonth() ||
+    (today.getMonth() === birth.getMonth() &&
+      today.getDate() >= birth.getDate());
+
+  // Si l'anniversaire n'est pas encore arrivé cette année, soustrait 1.
+  if (!hasHadBirthdayThisYear) {
+    age -= 1;
+  }
+
+  return age;
 };
