@@ -41,7 +41,7 @@ const Medicale = () => {
   const [totalPatients, setTotalPatients] = useState<number | null>(null);
   const [doctors, setDoctors] = useState<ActifRegisterDoctor[] | null>(null);
 
-  const { addPatient } = myStore();
+  const { addPatient, patient } = myStore();
 
   // Simuler des données de patients (à remplacer par votre API)
 
@@ -123,7 +123,7 @@ const Medicale = () => {
 
   return (
     <div className="min-h-screen bg-dark-300 p-6">
-      {!isOpen ? (
+      {!isOpen || patient ? (
         <MedicaleFile handleOpen={handleOpen} />
       ) : (
         <div className="max-w-4xl mx-auto">

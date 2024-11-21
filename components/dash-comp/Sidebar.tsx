@@ -84,12 +84,10 @@ const Sidebar = () => {
             <Stethoscope />
             Dossier Médical
           </Link>
-          <div className="flex flex-col items-start gap-2 ml-6 text-[#7A7C7E]">
+          {/* <div className="flex flex-col items-start gap-2 ml-6 text-[#7A7C7E]">
             <button>prescriptions</button>
-            <button>hey2</button>
-            <button>hey3</button>
-            <button>hey4</button>
-          </div>
+           
+          </div> */}
         </div>
       </div>
       <Button

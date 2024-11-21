@@ -51,7 +51,7 @@ const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
   const { patient: patientData } = myStore();
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [patientPrescription, setPatientPrescription] =
-    useState<Prescription | null>(null);
+    useState<Prescription[] | null>(null);
   const [doctor, setDoctor] = useState<ActifRegisterDoctor | null>(null);
 
   // console.log(patientPrescription);
@@ -73,28 +73,7 @@ const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
     if (dateString) return formatDateTime(dateString).dateTime;
   };
 
-  useEffect(() => {
-    const getPatientPrescriptions = async () => {
-      const data = {
-        patientId: patientData?._id,
-      };
-      try {
-        const response = await axios.post(
-          "/api/prescription/patientPrescription",
-          data
-        );
-        if (response.data) {
-          setPatientPrescription(response.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (patientData?._id) {
-      getPatientPrescriptions();
-    }
-  }, [patientData?._id]);
-
+ 
   useEffect(() => {
     const getPatientDoctor = async () => {
       const data = {
@@ -102,7 +81,6 @@ const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
       };
       try {
         const response = await axios.post("/api/doctor/getPatientDoctor", data);
-        console.log(response);
         if (response.data) {
           setDoctor(response.data);
         }
