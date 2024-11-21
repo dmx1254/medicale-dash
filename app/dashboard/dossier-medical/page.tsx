@@ -123,7 +123,7 @@ const Medicale = () => {
 
   return (
     <div className="min-h-screen bg-dark-300 p-6">
-      {!isOpen || patient ? (
+      {!isOpen && patient ? (
         <MedicaleFile handleOpen={handleOpen} />
       ) : (
         <div className="max-w-4xl mx-auto">

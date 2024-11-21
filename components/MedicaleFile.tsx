@@ -50,8 +50,6 @@ interface Prescription {
 const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
   const { patient: patientData } = myStore();
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
-  const [patientPrescription, setPatientPrescription] =
-    useState<Prescription[] | null>(null);
   const [doctor, setDoctor] = useState<ActifRegisterDoctor | null>(null);
 
   // console.log(patientPrescription);
@@ -73,7 +71,6 @@ const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
     if (dateString) return formatDateTime(dateString).dateTime;
   };
 
- 
   useEffect(() => {
     const getPatientDoctor = async () => {
       const data = {
