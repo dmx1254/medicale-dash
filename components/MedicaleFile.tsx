@@ -25,6 +25,7 @@ import myStore from "@/lib/zustandmanage";
 import Image from "next/image";
 import FloatingActionButtons from "./SearchButton";
 import axios from "axios";
+import { ActifRegisterDoctor } from "@/types";
 
 interface Medication {
   name: string;
@@ -51,6 +52,7 @@ const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
   const [isZoomed, setIsZoomed] = useState<boolean>(false);
   const [patientPrescription, setPatientPrescription] =
     useState<Prescription | null>(null);
+  const [doctor, setDoctor] = useState<ActifRegisterDoctor | null>(null);
 
   // console.log(patientPrescription);
 
@@ -92,6 +94,26 @@ const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
       getPatientPrescriptions();
     }
   }, [patientData?._id]);
+
+  useEffect(() => {
+    const getPatientDoctor = async () => {
+      const data = {
+        primaryPhysician: patientData?.primaryPhysician,
+      };
+      try {
+        const response = await axios.post("/api/doctor/getPatientDoctor", data);
+        console.log(response);
+        if (response.data) {
+          setDoctor(response.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (patientData?.primaryPhysician) {
+      getPatientDoctor();
+    }
+  }, [patientData?.primaryPhysician]);
 
   return (
     <div className="min-h-screen bg-dark-300 p-6">
@@ -235,9 +257,18 @@ const MedicaleFile = ({ handleOpen }: { handleOpen: () => void }) => {
                 <Activity className="w-5 h-5 text-green-500" />
                 <div>
                   <p className="text-dark-600">Médecin traitant</p>
-                  <p className="text-light-200">
-                    {patientData?.primaryPhysician}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src={doctor?.profile ? doctor?.profile : "/doctor.png"}
+                      height={80}
+                      width={80}
+                      alt="doctor"
+                      className="size-8"
+                    />
+                    <p className="text-light-200">
+                      Dr. {patientData?.primaryPhysician}
+                    </p>
+                  </div>
                 </div>
               </div>
 

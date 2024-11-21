@@ -9,12 +9,13 @@ import {
   Settings2,
 } from "lucide-react";
 import Prescription from "./Prescription";
+import MedicalHistory from "./MedicaleHistory";
 
 interface ActionButtonProps {
   icon: React.ReactNode;
   label: string;
   color: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const ActionButton: React.FC<ActionButtonProps> = ({
@@ -43,18 +44,16 @@ const ActionButton: React.FC<ActionButtonProps> = ({
         group
       `}
       style={{ backgroundColor: color }}
-      onClick={onClick}
+      onClick={onClick && onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative">
-        {/* {React.cloneElement(icon as React.ReactElement, {
+        {React.cloneElement(icon as React.ReactElement, {
           className: `w-6 h-6 transition-transform duration-300 ${
             isHovered ? "scale-110" : ""
           }`,
-        })} */}
-
-        {icon}
+        })}
       </div>
       <span className="absolute right-14 bg-gray-800 text-white px-2 py-1 rounded text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         {label}
@@ -90,9 +89,8 @@ const FloatingActionButtons = ({ onOpen }: { onOpen: () => void }) => {
           setPrescriptionOpen={setPrescriptionOpen}
         />
       ),
-      label: "Nouvelle prescription",
+      label: "Nouvelle ordonnance",
       color: "#3B82F6",
-      onClick: () => console.log("Prescription"),
     },
     {
       icon: <Download />,
@@ -107,10 +105,9 @@ const FloatingActionButtons = ({ onOpen }: { onOpen: () => void }) => {
       onClick: () => console.log("Schedule"),
     },
     {
-      icon: <History />,
+      icon: <MedicalHistory />,
       label: "Historique médical",
       color: "#F59E0B",
-      onClick: () => console.log("History"),
     },
   ];
 

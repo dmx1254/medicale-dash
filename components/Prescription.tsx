@@ -157,7 +157,7 @@ const Prescription = ({
     <Dialog open={open} onOpenChange={setPrescriptionOpen}>
       <DialogTrigger>
         <Button>
-          <FileText className="w-6 h-6 text-light-200" />
+          <FileText className="text-light-200" />
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl h-[90vh] flex flex-col bg-dark-400 text-light-200">
