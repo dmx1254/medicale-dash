@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 export default async function Home({ searchParams }: SearchParamProps) {
   const session = await getServerSession(options);
   if (session) redirect("/dashboard");
-  
+
   return (
     <div className="flex h-screen max-h-screen">
       {/* {isAdmin && <PasskeyModal />} */}
@@ -23,14 +23,6 @@ export default async function Home({ searchParams }: SearchParamProps) {
             className="mb-12 h-10 w-fit"
           />
           <PatientForm />
-          <div className="text-14-regular mt-20 flex items-start justify-start">
-            <p className="text-dark-600 xl:text-left">
-              &copy; 2024 MedicaleCare
-            </p>
-            {/* <Link href="/register" className="text-green-500">
-              s'inscrire
-            </Link> */}
-          </div>
         </div>
       </section>
       <Image
