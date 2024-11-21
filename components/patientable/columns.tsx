@@ -54,15 +54,7 @@ export const columns: ColumnDef<Patient>[] = [
       <p className="text-14-medium capitalize">{row?.original.occupation}</p>
     ),
   },
-  {
-    accessorKey: "identificationType",
-    header: "Type d'identification",
-    cell: ({ row }) => (
-      <p className="text-14-medium capitalize bg-amber-900 text-center p-2 rounded-full text-amber-200">
-        {row?.original.identificationType}
-      </p>
-    ),
-  },
+
   {
     accessorKey: "phone",
     header: "Téléphone",

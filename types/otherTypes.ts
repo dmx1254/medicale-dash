@@ -1,4 +1,4 @@
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, Stethoscope } from "lucide-react";
 import {
   UserRound,
   HeartPulse,
@@ -70,4 +70,13 @@ export const sidebarInfo: profilePerso[] = [
     slug: "/dashboard/nouveau-patient",
     icon: ShieldPlus,
   },
+  {
+    id: "lpawv47",
+    title: "Dossier médical ",
+    slug: "/dashboard/dossier-medical",
+    icon: Stethoscope,
+  },
 ];
+
+
+

@@ -70,25 +70,7 @@ const Sidebar = () => {
             </Link>
           </Button>
         ))}
-        <div className="flex flex-col items-start self-center gap-4 -ml-1">
-          <Link
-            href="/dashboard/dossier-medical"
-            className={clsx(
-              "cursor-pointer flex items-center gap-2 text-[#abafb4] opacity-70 hover:text-green-500 hover:opacity-100",
-              {
-                "text-green-500 opacity-90 hover:opacity-100":
-                  "/dashboard/dossier-medical" === pathname,
-              }
-            )}
-          >
-            <Stethoscope />
-            Dossier Médical
-          </Link>
-          {/* <div className="flex flex-col items-start gap-2 ml-6 text-[#7A7C7E]">
-            <button>prescriptions</button>
-           
-          </div> */}
-        </div>
+       
       </div>
       <Button
         variant="ghost"
