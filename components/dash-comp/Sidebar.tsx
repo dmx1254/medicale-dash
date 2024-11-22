@@ -78,7 +78,7 @@ const Sidebar = () => {
         onClick={logout}
       >
         <LogOut />
-        <span className="max-md:hidden">Logout</span>
+        <span className="max-md:hidden">Déconnexion</span>
       </Button>
     </div>
   );

@@ -331,7 +331,7 @@ const Medicale = () => {
                 {/* Résultats de recherche */}
                 <div
                   className={clsx(
-                    "mt-6 space-y-2 h-28 overflow-y-scroll hide-scrollbar-pat",
+                    "mt-6 space-y-2 overflow-y-scroll hide-scrollbar-pat",
                     {
                       "h-28": mockPatients.length > 0 || isSearchLoading,
                       "h-0": !mockPatients.length && !isSearchLoading,
